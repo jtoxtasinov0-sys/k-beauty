@@ -1,0 +1,32 @@
+{
+  "name": "kbeauty-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "K-Beauty Store Optom — Telegram bot + REST API",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:seed": "node prisma/seed.js",
+    "db:backup": "node prisma/backup.js",
+    "db:restore": "node prisma/backup.js --restore",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "node-telegram-bot-api": "^0.66.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}

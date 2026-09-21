@@ -1,0 +1,82 @@
+# ============================================================
+#  K-Beauty Store Optom — .gitignore
+#  Bu fayl GitHub'ga YUBORILMAYDIGAN narsalar ro'yxati.
+#  Har bir qator — bitta qoida. # bilan boshlangani izoh.
+# ============================================================
+
+# ---------- 1. Kutubxonalar (eng muhimi) ----------
+# node_modules juda katta (yuzlab MB) va npm install bilan
+# qayta yuklab olinadi — hech qachon GitHub'ga yuklanmaydi.
+node_modules/
+.pnp
+.pnp.js
+
+# ---------- 2. Maxfiy ma'lumotlar (JUDA MUHIM) ----------
+# .env ichida bot tokeni, Neon parol, admin parol bor.
+# Bular GitHub'ga tushsa — hisobingiz o'g'irlanishi mumkin.
+.env
+.env.*
+# Lekin namuna fayli qolsin (ichida haqiqiy parol yo'q):
+!.env.example
+
+# ---------- 3. Build natijalari ----------
+# npm run build yasaydigan fayllar — istalgan vaqt qayta yasaladi.
+dist/
+dist-ssr/
+build/
+.vite/
+*.local
+
+# ---------- 4. Prisma avtomatik yasagan fayllar ----------
+# prisma generate har safar qaytadan yasaydi.
+backend/node_modules/.prisma/
+backend/prisma/*.db
+backend/prisma/*.db-journal
+backend/prisma/migrations/dev.db*
+
+# ---------- 5. Loglar va xato fayllari ----------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---------- 6. Windows / macOS tizim axlati ----------
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ---------- 7. Dasturchi muharrirlari ----------
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ---------- 8. Vaqtinchalik va zaxira fayllar ----------
+*.tmp
+*.temp
+*.bak
+*.old
+*~
+.cache/
+.temp/
+tmp/
+
+# ---------- 9. Claude Code mahalliy sozlamalari ----------
+.claude/settings.local.json
+
+# ---------- 10. Test / qamrov hisobotlari ----------
+coverage/
+.nyc_output/

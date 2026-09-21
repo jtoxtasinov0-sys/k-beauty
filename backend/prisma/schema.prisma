@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ MIJOZ ============
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId String   @unique
+  firstName  String
+  lastName   String?
+  username   String?
+  phone      String?
+  language   String   @default("uz") // uz | ru
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  orders Order[]
+
+  @@map("users")
+}
+
+// ============ MAHSULOT ============
+model Product {
+  id     Int     @id @default(autoincrement())
+  name   String                      // O'zbekcha nom
+  nameRu String?                     // Ruscha nom
+  brand  String?                     // ANUA, MEDIPEEL, LACTOFIT ...
+
+  description   String? @db.Text     // Tarkibi / tavsif (o'zbekcha)
+  descriptionRu String? @db.Text     // Tarkibi / tavsif (ruscha)
+
+  imageUrl String?                   // /uploads/xxx.webp
+  category String                    // tozalovchi | krem | serum | toner | bad | boshqa
+
+  pricePiece      Int                // Donaga narx (₩ won)
+  priceWholesale  Int                // Optom narx (₩ won)
+  minWholesaleQty Int      @default(10) // Shu sondan boshlab optom narx
+
+  expiryDate DateTime?               // Srogi
+  volume     String?                 // "205ml / 70 pads"
+
+  inStock  Boolean @default(true)    // Nalichi
+  stockQty Int     @default(0)       // Ombordagi soni (0 = cheklanmagan)
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@map("products")
+}
+
+// ============ BUYURTMA ============
+model Order {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items    Json // [{ productId, name, qty, unitPrice, isWholesale, sum }]
+  totalWon Int
+
+  region       String  // KR | UZ
+  customerName String
+  phone        String
+  address      String  @db.Text
+  comment      String? @db.Text
+
+  status    String   @default("NEW") // NEW | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
