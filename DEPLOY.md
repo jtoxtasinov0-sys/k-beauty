@@ -6,7 +6,7 @@ Loyiha uch qismdan iborat va ular **uch xil joyda** ishlaydi:
   MIJOZ (Telegram)                 SIZ (brauzer)
         |                                |
         v                                v
-  kbeauty-miniapp.vercel.app      kbeauty-admin.vercel.app
+  kbeauty-miniapp.vercel.app    kbeauty-admin-sepia.vercel.app
   (Mini App — Vercel)             (Admin panel — Vercel)
          \                             /
           \                           /
@@ -27,10 +27,37 @@ Ikkala frontend allaqachon internetda:
 | Nima | Havola |
 |---|---|
 | Mini App (mijozlar ko'radi) | https://kbeauty-miniapp.vercel.app |
-| Admin panel (siz ishlatasiz) | https://kbeauty-admin.vercel.app |
+| Admin panel (siz ishlatasiz) | https://kbeauty-admin-sepia.vercel.app |
 
 > ⚠️ **Hozir ular hali to'liq ishlamaydi** — backend manzili hali ma'lum emas.
 > Render'ni tugatgach, **3-QISM** ni bajarasiz va hammasi jonlanadi.
+
+> 🚫 **Diqqat:** `kbeauty-admin.vercel.app` (`-sepia` siz) — **begona odamning sayti**.
+> O'sha nom Vercel'da band ekan, shuning uchun bizga `-sepia` qo'shimchali nom berildi.
+> Faqat yuqoridagi jadvaldagi havoladan foydalaning va uni brauzerga saqlab qo'ying.
+
+---
+
+### 1a-qadam. Avtomatik yangilanishni tuzatish (5 daqiqa)
+
+Vercel ikkala loyihani GitHub'ga o'zi ulab qo'ydi, lekin **papka manzilini bilmaydi** —
+shuning uchun `git push` qilganda qurish xato bilan tugayapti
+(`Could not read package.json`). Saytlar ishlayapti, lekin avtomatik yangilanmaydi.
+
+Buni tuzatish uchun **har ikkala loyihada** quyidagini bajaring:
+
+**kbeauty-miniapp uchun:**
+1. https://vercel.com/dashboard → **kbeauty-miniapp** loyihasini oching
+2. **Settings** → chapdan **Build & Deployment**
+3. **Root Directory** bo'limini toping → **Edit** bosing
+4. `miniapp` deb yozing → **Save**
+
+**kbeauty-admin uchun:**
+1. **kbeauty-admin** loyihasini oching
+2. **Settings** → **Build & Deployment** → **Root Directory** → **Edit**
+3. `admin` deb yozing → **Save**
+
+Shundan keyin har safar `git push` qilganingizda ikkala sayt ham o'zi yangilanadi.
 
 ---
 
@@ -207,7 +234,7 @@ Endi botda pastda "🛍 Do'kon" tugmasi paydo bo'ladi va bosilganda Mini App och
 Ketma-ket tekshirib chiqing:
 
 - [ ] `https://kbeauty-backend.onrender.com` → JSON javob beradi
-- [ ] `https://kbeauty-admin.vercel.app` → parol so'raydi, yangi parol bilan kiradi
+- [ ] `https://kbeauty-admin-sepia.vercel.app` → parol so'raydi, yangi parol bilan kiradi
 - [ ] Admin panelda 16 ta mahsulot va ularning rasmlari ko'rinadi
 - [ ] Telegram'da botga `/start` → javob beradi
 - [ ] "🛍 Do'kon" tugmasi → Mini App ochiladi, mahsulotlar chiqadi
@@ -226,13 +253,10 @@ git push
 ```
 
 - **Render** — `push` dan keyin o'zi qayta yuklaydi (avtomatik)
-- **Vercel** — hozircha avtomatik emas. Ikki yo'l bor:
-  - **a)** Har safar `miniapp/` va `admin/` papkalari ichida
-    `vercel deploy --prod` buyrug'ini ishlatish
-  - **b) Tavsiya etiladi:** Vercel'da loyihani GitHub'ga ulash
-    (Settings → Git → Connect Git Repository). Shunda `push` qilganda
-    Vercel ham avtomatik yangilanadi.
-    **Muhim:** ulaganda **Root Directory** ni `miniapp` (yoki `admin`) qilib belgilang.
+- **Vercel** — **1a-qadam**ni bajargan bo'lsangiz, u ham avtomatik yangilanadi
+
+Agar 1a-qadamni bajarmagan bo'lsangiz, Vercel'ni qo'lda yangilash kerak:
+`miniapp/` va `admin/` papkalari ichida navbat bilan `vercel deploy --prod`.
 
 ---
 
@@ -247,7 +271,9 @@ git push
 | Bot ~1 daqiqa kechikib javob beradi | Bepul tarif uxlab qolgan | Normal holat. $7/oy tarifga o'ting |
 | Yangi yuklagan rasm yo'qoldi | Bepul tarifda fayllar saqlanmaydi | $7/oy tarif + Disk qo'shing |
 | Admin panelga kira olmayapman | `ADMIN_PASSWORD` boshqa | Render → Environment → qiymatni tekshiring |
-| Build xatosi: "package.json not found" | Root Directory noto'g'ri | Settings → Root Directory = `backend` |
+| Render build xatosi: "package.json not found" | Root Directory noto'g'ri | Render → Settings → Root Directory = `backend` |
+| Vercel'da `Could not read package.json` | Vercel Root Directory qo'yilmagan | **1a-qadam**ni bajaring |
+| Admin panelda begona sayt ochildi | `-sepia` siz havolaga kirilgan | To'g'ri havola: `kbeauty-admin-sepia.vercel.app` |
 
 ---
 
@@ -257,7 +283,7 @@ git push
 |---|---|
 | Kod | https://github.com/jtoxtasinov0-sys/k-beauty |
 | Mini App | https://kbeauty-miniapp.vercel.app |
-| Admin panel | https://kbeauty-admin.vercel.app |
+| Admin panel | https://kbeauty-admin-sepia.vercel.app |
 | Vercel paneli | https://vercel.com/dashboard |
 | Render paneli | https://dashboard.render.com |
 | Neon (baza) | https://console.neon.tech |
