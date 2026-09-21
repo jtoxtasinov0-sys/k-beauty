@@ -80,3 +80,8 @@ tmp/
 # ---------- 10. Test / qamrov hisobotlari ----------
 coverage/
 .nyc_output/
+
+# ---------- 11. Vercel ----------
+# .vercel papkasida loyiha ID'lari, .env.local ichida Vercel tokeni bor.
+.vercel/
+.vercel
