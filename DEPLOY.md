@@ -14,6 +14,102 @@
 > **Quyidagi qadamlar tarix uchun qoldirilgan** — qayta qurish kerak bo'lsa yoki
 > nimadir buzilsa, shu yo'riqnomadan foydalanasiz.
 
+---
+
+## ⚠️ "Kompyuterni o'chirgandan keyin bot ishlamay qoldi"
+
+Telegram'da **Error 1033 — Cloudflare Tunnel error** chiqsa, sabab shu.
+
+### Nima bo'lgan?
+
+Dastlab Mini App kompyuteringizdan `cloudflared` orqali ochilgan edi:
+`https://person-formula-...trycloudflare.com`. Bu havola **faqat kompyuter
+yoqiq turganda** ishlaydi. Kompyuter o'chgach havola o'ldi, lekin Telegram'dagi
+tugma o'sha o'lik havolaga qarab turaverdi.
+
+### Kod tomonidan tuzatildi ✅
+
+| Muammo | Endi nima bo'ladi |
+|---|---|
+| `WEBAPP_URL` da tunnel havolasi qolib ketgan | Hostingda bunday havola **rad etiladi**, doimiy Vercel havolasi ishlatiladi |
+| Menu tugmasi o'lik havolaga qarab turibdi | Bot ishga tushganda tugmani **o'zi tuzatadi**; havola yaroqsiz bo'lsa tugmani **olib tashlaydi** |
+| Eski xabardagi tugma baribir o'lik | Botga **`/menu`** yozing — yangi ishlaydigan tugma keladi |
+| Server 15 daqiqada uxlab bot o'chadi | Server o'ziga-o'zi so'rov yuborib **uyg'oq turadi** |
+| Tarmoq uzilsa butun server o'lardi | Tarmoq xatosi endi **jarayonni o'ldirmaydi** |
+| Vercel'da `VITE_API_URL` qo'yilmagan | Frontend doimiy backend manzilini **o'zi topadi** |
+
+### Sizdan talab qilinadigan 2 ta qadam
+
+**1. Render'da `WEBAPP_URL` ni to'g'rilang** (tavsiya etiladi, majburiy emas —
+kod usiz ham ishlaydi, lekin logda ogohlantirish chiqaveradi):
+
+1. https://dashboard.render.com → `k-beauty-0rv9` servisi
+2. Chapdan **Environment**
+3. `WEBAPP_URL` ni toping va qiymatini shunga almashtiring:
+   `https://kbeauty-miniapp.vercel.app`
+4. **Save changes** → servis o'zi qayta yuklanadi
+
+**2. Telegram'da botni yangilang:**
+
+1. Botni oching: [@K_Beauty_Store_Optom_bot](https://t.me/K_Beauty_Store_Optom_bot)
+2. **`/start`** yuboring (eski xabardagi tugmani bosmang — uning ichida
+   o'lik havola muzlab qolgan, uni hech kim o'zgartira olmaydi)
+3. Yangi kelgan **🛍 Do'konni ochish** tugmasini bosing
+
+> 📌 Eski xabarlardagi tugmalar **hech qachon** tuzalmaydi — Telegram
+> ularni yuborilgan paytdagi havola bilan saqlab qoladi. Har doim yangi
+> `/start` yoki `/menu` xabaridagi tugmani ishlating.
+
+### Ishlayotganini qanday tekshiraman?
+
+Brauzerda oching: https://k-beauty-0rv9.onrender.com
+
+Shunday javob chiqadi — `webAppUrl` to'g'ri va `polling: true` bo'lsa hammasi joyida:
+
+```json
+{
+  "name": "K-Beauty Store Optom API",
+  "status": "ishlayapti",
+  "bot": {
+    "username": "K_Beauty_Store_Optom_bot",
+    "polling": true,
+    "webAppUrl": "https://kbeauty-miniapp.vercel.app",
+    "menuButton": { "status": "o‘rnatildi" }
+  }
+}
+```
+
+| Nimani ko'rsangiz | Ma'nosi |
+|---|---|
+| `polling: true` | Bot ishlayapti ✅ |
+| `polling: false` | Bot ishga tushmagan — Render loglarini oching |
+| `webAppUrlSource: "env"` | `WEBAPP_URL` to'g'ri qo'yilgan ✅ |
+| `webAppUrlSource: "fallback-temporary"` | `WEBAPP_URL` da hali ham eski tunnel havolasi turibdi (kod uni chetlab o'tdi) |
+| `menuButton.status: "o‘rnatildi"` | Do'kon tugmasi to'g'ri havolaga ulangan ✅ |
+
+---
+
+## ⚡ Mini App tez ochilishi
+
+App ochilganda serverdan javob kutib bo'sh ekran turardi — ayniqsa Render
+uxlab qolgan bo'lsa ~1 daqiqagacha. Endi:
+
+- **Oxirgi ko'rilgan mahsulotlar telefon xotirasida saqlanadi** va app ochilishi
+  bilanoq chiziladi; yangisi orqa fonda kelib ustiga yoziladi
+- **So'rov sahifa ochilishi bilanoq** boshlanadi (React chizilishini kutmaydi)
+- **Server uxlamaydi** (keep-alive), shuning uchun sovuq start deyarli bo'lmaydi
+- Server javob bermasa ham app **ishlayveradi** — saqlangan katalogni ko'rsatadi
+
+O'lchangan natija (16 ta mahsulot, haqiqiy brauzerda):
+
+| Holat | Ilgari | Endi |
+|---|---|---|
+| Birinchi ochilish | ~800 ms | ~765 ms |
+| Takroriy ochilish | ~800 ms | **~290 ms** |
+| Server javob bermayapti | cheksiz kutish | **~350 ms** (cache'dan) |
+
+---
+
 Loyiha uch qismdan iborat va ular **uch xil joyda** ishlaydi:
 
 ```

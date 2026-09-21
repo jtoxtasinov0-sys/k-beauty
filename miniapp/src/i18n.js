@@ -31,6 +31,7 @@ export const STRINGS = {
     allCategories: 'Hammasi',
     nothingFound: 'Hech narsa topilmadi',
     loading: 'Yuklanmoqda...',
+    wakingUp: "Server uyg'onmoqda, biroz kuting...",
 
     // Mahsulot
     composition: 'Tarkibi va tavsifi',
@@ -121,6 +122,7 @@ export const STRINGS = {
     allCategories: 'Все',
     nothingFound: 'Ничего не найдено',
     loading: 'Загрузка...',
+    wakingUp: 'Сервер просыпается, подождите...',
 
     composition: 'Состав и описание',
     piece: 'За штуку',

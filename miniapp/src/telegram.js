@@ -20,6 +20,9 @@ export function initTelegram() {
 
 export const initData = tg?.initData || '';
 
+/** Joriy Telegram foydalanuvchisining ID'si (brauzerda ochilsa — null). */
+export const telegramUserId = tg?.initDataUnsafe?.user?.id ?? null;
+
 export function haptic(style = 'light') {
   try {
     tg?.HapticFeedback?.impactOccurred(style);

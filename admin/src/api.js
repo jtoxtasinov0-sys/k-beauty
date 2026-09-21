@@ -1,4 +1,6 @@
-const BASE = import.meta.env.VITE_API_URL || '';
+import { API_BASE } from './config.js';
+
+const BASE = API_BASE;
 const TOKEN_KEY = 'kbeauty_admin_token';
 
 export function getToken() {

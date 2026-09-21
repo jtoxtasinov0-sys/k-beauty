@@ -3,8 +3,11 @@ import cors from 'cors';
 import { config } from './config/default.js';
 import { connectDatabase, disconnectDatabase } from './database/connection.js';
 import { startBot, stopBot } from './core/bot.js';
+import { startKeepAlive, stopKeepAlive } from './core/keepAlive.js';
+import { installProcessGuards } from './core/guard.js';
 import { errorHandler } from './middlewares/auth.middleware.js';
 import registerBotRoutes from './routes/bot.routes.js';
+import { getBotStatus } from './controllers/botController.js';
 import clientRoutes from './routes/client.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
@@ -16,8 +19,17 @@ app.use(express.json({ limit: '2mb' }));
 // Yuklangan rasmlar: http://localhost:4000/uploads/xxx.webp
 app.use('/uploads', express.static(config.uploadsDir, { maxAge: '7d' }));
 
+// Keep-alive va Render Health Check uchun eng yengil javob.
+app.get('/healthz', (_req, res) => res.json({ ok: true }));
+
+// Brauzerdan ochib tekshirish uchun: bot ishlayaptimi va Mini App havolasi to'g'rimi.
 app.get('/', (_req, res) => {
-  res.json({ name: 'K-Beauty Store Optom API', status: 'ishlayapti' });
+  res.json({
+    name: 'K-Beauty Store Optom API',
+    status: 'ishlayapti',
+    uptimeSeconds: Math.round(process.uptime()),
+    bot: getBotStatus(),
+  });
 });
 
 app.use('/api/client', clientRoutes);
@@ -51,8 +63,32 @@ function assertAdminPassword() {
   }
 }
 
+/**
+ * WEBAPP_URL eskirib qolgan bo'lsa logda aniq yozib qo'yadi.
+ * Eng ko'p uchraydigan holat: kompyuterdagi cloudflared havolasi hostingga
+ * ko'chirilgan, keyin kompyuter o'chirilgan va havola o'lgan.
+ */
+function reportWebAppUrl() {
+  const { webAppUrl, webAppUrlSource, rawWebAppUrl } = config.bot;
+
+  if (webAppUrlSource === 'fallback-temporary') {
+    console.warn('⚠️  WEBAPP_URL vaqtinchalik tunnel havolasi edi:', rawWebAppUrl);
+    console.warn('   U kompyuter o‘chganda o‘ladi, shuning uchun ishlatilmadi.');
+    console.warn('   Buning o‘rniga doimiy havola olindi:', webAppUrl);
+    console.warn('   Render → Environment → WEBAPP_URL ni shu qiymatga o‘zgartiring.');
+  } else if (webAppUrlSource === 'fallback-empty') {
+    console.warn('⚠️  WEBAPP_URL berilmagan — doimiy havola olindi:', webAppUrl);
+  } else if (webAppUrlSource === 'fallback-not-https') {
+    console.warn('⚠️  WEBAPP_URL https emas:', rawWebAppUrl, '— doimiy havola olindi:', webAppUrl);
+  } else {
+    console.log('🔗 Mini App havolasi:', webAppUrl);
+  }
+}
+
 async function bootstrap() {
+  installProcessGuards();
   assertAdminPassword();
+  reportWebAppUrl();
   await connectDatabase();
 
   const server = app.listen(config.port, () => {
@@ -66,8 +102,12 @@ async function bootstrap() {
     console.error('❌ Botni ishga tushirib bo\'lmadi:', error.message);
   }
 
+  // Bepul tarifda server uxlab qolmasligi uchun (u bilan birga bot ham o'chadi)
+  startKeepAlive();
+
   const shutdown = async () => {
     console.log('\n👋 To\'xtatilmoqda...');
+    stopKeepAlive();
     await stopBot();
     server.close();
     await disconnectDatabase();

@@ -151,7 +151,20 @@ Dastur o'zi Telegram menu tugmasini o'rnatadi:
 > ⚠️ Har safar `cloudflared` qayta ishga tushirilganda **havola o'zgaradi** — yangi havolani
 > `WEBAPP_URL` ga qayta qo'yib, backendni restart qiling. Tunnel terminalini yopmang!
 
-### 5.4. ngrok ishlatmoqchi bo'lsangiz (ixtiyoriy)
+### 5.4. Kompyuterni o'chirsangiz nima bo'ladi?
+
+Tunnel havolasi **o'ladi** va Telegram'da **Error 1033** chiqadi. Bu normal holat —
+tunnel faqat kompyuter yoqiq turganda ishlaydi.
+
+- **Internetdagi do'kon buzilmaydi:** u Vercel + Render'da alohida ishlaydi
+  (→ `DEPLOY.md`). Bot o'zi doimiy havolaga qaytadi.
+- **Eski xabardagi tugma baribir ochilmaydi** — Telegram uni yuborilgan paytdagi
+  havola bilan saqlab qo'yadi. Botga **`/start`** yoki **`/menu`** yuboring,
+  yangi ishlaydigan tugma keladi.
+- Localhost'da qayta ishlamoqchi bo'lsangiz: `cloudflared` ni qayta oching,
+  yangi havolani `WEBAPP_URL` ga qo'ying va backendni restart qiling.
+
+### 5.5. ngrok ishlatmoqchi bo'lsangiz (ixtiyoriy)
 
 cloudflared yetarli, lekin ngrok kerak bo'lsa: https://ngrok.com da ro'yxatdan o'ting,
 dasturni yuklab oling, `ngrok config add-authtoken SIZNING_TOKEN` bajaring va
