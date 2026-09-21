@@ -209,15 +209,42 @@ Xuddi shu 6 qadamni **kbeauty-admin** loyihasida ham takrorlang.
 
 ---
 
-## 4-QISM — Telegram botni Mini App'ga ulash
+## 4-QISM — Telegram menyu tugmasi (AVTOMATIK ✅)
+
+**Bu qismni qo'lda bajarish shart emas.** Bot ishga tushganda menyu tugmasini
+o'zi o'rnatadi — `WEBAPP_URL` ni (4-qadamda qo'ygan `https://kbeauty-miniapp.vercel.app`)
+Telegram'ga o'zi yuboradi.
+
+Render loglarida shu qatorni ko'rsangiz — hammasi joyida:
+
+```
+📱 Menu tugmasi o'rnatildi: https://kbeauty-miniapp.vercel.app
+```
+
+### Agar ogohlantirish chiqsa
+
+Bunday qator chiqsa, `WEBAPP_URL` `https://` bilan boshlanmayapti:
+
+```
+⚠️  WEBAPP_URL https emas — Telegram menu tugmasi o'rnatilmadi
+```
+
+Render → **Environment** → `WEBAPP_URL` ni tekshiring. U aynan shunday bo'lsin:
+`https://kbeauty-miniapp.vercel.app` (oxirida `/` yo'q, `http://` emas).
+Tuzatgandan keyin **Manual Deploy** → **Deploy latest commit**.
+
+### Qo'lda o'rnatish (faqat zarurat bo'lsa)
+
+Agar baribir ishlamasa, BotFather orqali qo'lda o'rnatasiz:
 
 1. Telegram'da **@BotFather** ni oching
 2. `/mybots` → `K_Beauty_Store_Optom_bot` ni tanlang
 3. **Bot Settings** → **Menu Button** → **Configure Menu Button**
 4. Havolani yuboring: `https://kbeauty-miniapp.vercel.app`
-5. Tugma nomini yuboring: `🛍 Do'kon`
+5. Tugma nomini yuboring: `Do'kon`
 
-Endi botda pastda "🛍 Do'kon" tugmasi paydo bo'ladi va bosilganda Mini App ochiladi.
+> Eslatma: bot xabarlari ichidagi "🛍 Do'konni ochish" tugmasi ham xuddi shu
+> `WEBAPP_URL` dan foydalanadi — u BotFather'ga bog'liq emas.
 
 ---
 
