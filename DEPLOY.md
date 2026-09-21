@@ -38,26 +38,18 @@ Ikkala frontend allaqachon internetda:
 
 ---
 
-### 1a-qadam. Avtomatik yangilanishni tuzatish (5 daqiqa)
+### Avtomatik yangilanish — sozlab qo'yilgan ✅
 
-Vercel ikkala loyihani GitHub'ga o'zi ulab qo'ydi, lekin **papka manzilini bilmaydi** —
-shuning uchun `git push` qilganda qurish xato bilan tugayapti
-(`Could not read package.json`). Saytlar ishlayapti, lekin avtomatik yangilanmaydi.
+Vercel ikkala loyihani GitHub'ga o'zi ulagan. Dastlab qaysi papkadan qurishni
+bilmagani uchun `git push` da xato berardi — **bu tuzatildi**:
 
-Buni tuzatish uchun **har ikkala loyihada** quyidagini bajaring:
+| Loyiha | Root Directory |
+|---|---|
+| `kbeauty-miniapp` | `miniapp` |
+| `kbeauty-admin` | `admin` |
 
-**kbeauty-miniapp uchun:**
-1. https://vercel.com/dashboard → **kbeauty-miniapp** loyihasini oching
-2. **Settings** → chapdan **Build & Deployment**
-3. **Root Directory** bo'limini toping → **Edit** bosing
-4. `miniapp` deb yozing → **Save**
-
-**kbeauty-admin uchun:**
-1. **kbeauty-admin** loyihasini oching
-2. **Settings** → **Build & Deployment** → **Root Directory** → **Edit**
-3. `admin` deb yozing → **Save**
-
-Shundan keyin har safar `git push` qilganingizda ikkala sayt ham o'zi yangilanadi.
+Endi `git push` qilganingizda ikkala sayt ham o'zi qayta quriladi.
+Hech narsa qilishingiz shart emas.
 
 ---
 
@@ -144,10 +136,10 @@ Qiymatlarni kompyuteringizdagi `backend/.env` faylidan ko'chiring
 | `WEBAPP_URL` | `https://kbeauty-miniapp.vercel.app` |
 | `API_BASE_URL` | `https://kbeauty-backend.onrender.com` |
 
-> 🔐 **ADMIN_PASSWORD haqida muhim ogohlantirish:**
-> Kodda zaxira parol `kbeauty2025` turibdi va u GitHub'da hammaga ko'rinadi.
-> Shuning uchun Render'da **boshqa, kuchli** parol qo'ying — masalan 16 ta
-> tasodifiy belgi. Shunda eski parol ishlamay qoladi.
+> 🔐 **ADMIN_PASSWORD majburiy.** Koddagi ochiq zaxira parol (`kbeauty2025`)
+> olib tashlandi — endi parol berilmasa server **umuman ishga tushmaydi** va
+> logda `❌ ADMIN_PASSWORD berilmagan` deb yozadi. Kamida 8 ta belgi kerak.
+> O'zingiz kuchli parol o'ylab toping (masalan 16 ta tasodifiy belgi).
 
 > ℹ️ `PORT` ni qo'shmang — Render uni o'zi beradi, kod uni avtomatik oladi.
 
@@ -253,10 +245,11 @@ git push
 ```
 
 - **Render** — `push` dan keyin o'zi qayta yuklaydi (avtomatik)
-- **Vercel** — **1a-qadam**ni bajargan bo'lsangiz, u ham avtomatik yangilanadi
+- **Vercel** — u ham `push` dan keyin o'zi yangilanadi (Root Directory sozlangan)
 
-Agar 1a-qadamni bajarmagan bo'lsangiz, Vercel'ni qo'lda yangilash kerak:
-`miniapp/` va `admin/` papkalari ichida navbat bilan `vercel deploy --prod`.
+Ya'ni yuqoridagi uchta buyruqdan boshqa hech narsa kerak emas.
+Zarur bo'lsa qo'lda ham yangilash mumkin: `miniapp/` va `admin/` papkalari
+ichida navbat bilan `vercel deploy --prod`.
 
 ---
 
@@ -272,7 +265,8 @@ Agar 1a-qadamni bajarmagan bo'lsangiz, Vercel'ni qo'lda yangilash kerak:
 | Yangi yuklagan rasm yo'qoldi | Bepul tarifda fayllar saqlanmaydi | $7/oy tarif + Disk qo'shing |
 | Admin panelga kira olmayapman | `ADMIN_PASSWORD` boshqa | Render → Environment → qiymatni tekshiring |
 | Render build xatosi: "package.json not found" | Root Directory noto'g'ri | Render → Settings → Root Directory = `backend` |
-| Vercel'da `Could not read package.json` | Vercel Root Directory qo'yilmagan | **1a-qadam**ni bajaring |
+| Vercel'da `Could not read package.json` | Root Directory o'chib ketgan | Vercel → Settings → Build & Deployment → Root Directory = `miniapp` / `admin` |
+| Render logida `❌ ADMIN_PASSWORD berilmagan` | Parol qo'yilmagan | Render → Environment → `ADMIN_PASSWORD` qo'shing (8+ belgi) |
 | Admin panelda begona sayt ochildi | `-sepia` siz havolaga kirilgan | To'g'ri havola: `kbeauty-admin-sepia.vercel.app` |
 
 ---

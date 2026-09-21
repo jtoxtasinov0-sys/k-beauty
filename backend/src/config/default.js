@@ -16,7 +16,10 @@ export const config = {
   },
 
   admin: {
-    password: process.env.ADMIN_PASSWORD || 'kbeauty2025',
+    // Zaxira qiymat ATAYLAB yo'q: kod GitHub'da ochiq turadi, shuning uchun
+    // parol faqat .env dan (yoki hosting sozlamalaridan) olinadi.
+    // Tekshiruv: src/index.js ichidagi assertAdminPassword().
+    password: process.env.ADMIN_PASSWORD || '',
   },
 
   // Localhost'da brauzerdan (Telegramsiz) test qilish uchun

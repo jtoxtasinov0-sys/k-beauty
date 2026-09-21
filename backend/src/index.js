@@ -26,7 +26,33 @@ app.use('/api/admin', adminRoutes);
 app.use((_req, res) => res.status(404).json({ error: 'Yo\'l topilmadi' }));
 app.use(errorHandler);
 
+/**
+ * Admin paroli yo'q bo'lsa serverni ishga tushirmaydi.
+ * Sabab: parol bir vaqtda token sifatida ham ishlatiladi — bo'sh qolsa
+ * bo'sh parol bilan admin panelga kirib bo'lardi.
+ */
+function assertAdminPassword() {
+  const password = config.admin.password;
+
+  if (!password) {
+    console.error("❌ ADMIN_PASSWORD berilmagan — server ishga tushmaydi.");
+    console.error('   Localhost uchun: backend/.env fayliga ADMIN_PASSWORD="..." qo\'shing.');
+    console.error('   Render/hosting uchun: Environment Variables bo\'limiga qo\'shing.');
+    process.exit(1);
+  }
+
+  if (password.length < 8) {
+    console.error('❌ ADMIN_PASSWORD juda qisqa — kamida 8 ta belgi bo\'lsin.');
+    process.exit(1);
+  }
+
+  if (password === 'kbeauty2025') {
+    console.warn('⚠️  ADMIN_PASSWORD eski ochiq parolga teng — uni almashtiring!');
+  }
+}
+
 async function bootstrap() {
+  assertAdminPassword();
   await connectDatabase();
 
   const server = app.listen(config.port, () => {
