@@ -99,21 +99,32 @@ boshlaganda pullik tarifga o'ting:
 
 ### 3-qadam. Sozlamalarni to'ldirish
 
-Formani **aynan shunday** to'ldiring:
+Forma maydonlari **yuqoridan pastga** shu tartibda keladi:
 
-| Maydon | Qiymat |
-|---|---|
-| **Name** | `kbeauty-backend` |
-| **Language** | `Node` |
-| **Branch** | `main` |
-| **Region** | `Singapore` (Koreyaga eng yaqini) |
-| **Root Directory** | `backend` |
-| **Build Command** | `npm install` |
-| **Start Command** | `npm start` |
-| **Instance Type** | `Free` (yoki `0.5c-512mb` — $7/oy) |
+| № | Maydon | Qiymat |
+|---|---|---|
+| 1 | **Name** | `kbeauty-backend` |
+| 2 | **Region** | `Singapore` (Koreyaga eng yaqini) |
+| 3 | **Branch** | `main` |
+| 4 | **Language** | `Node` |
+| 5 | **Build Command** | `npm install` |
+| 6 | **Start Command** | `npm start` |
+| 7 | **Instance Type** | `Free` (yoki `0.5c-512mb` — $7/oy) |
 
-> ⚠️ **Root Directory** ni `backend` deb yozishni unutmang!
-> Aks holda Render loyihani topa olmaydi va build xato beradi.
+> 📌 **Name** ni yozganingizda, uning ostida havola ko'rinadi —
+> `kbeauty-backend.onrender.com`. Agar bu nom band bo'lsa, Render boshqa nom
+> so'raydi. **O'sha havolani yozib oling** — 3-QISM da kerak bo'ladi.
+
+### ⚠️ Root Directory — **Advanced** bo'limida
+
+Bu maydon asosiy formada emas. Pastdagi **Advanced** tugmasini bosib oching,
+so'ng **Root Directory** maydoniga `backend` deb yozing.
+
+Bu eng ko'p unutiladigan qadam — agar bo'sh qolsa, build
+`Could not read package.json` xatosi bilan to'xtaydi.
+
+Xuddi shu **Advanced** bo'limida **Health Check Path** maydoni ham bor —
+unga `/` deb yozib qo'ying (majburiy emas, lekin foydali).
 
 ---
 
@@ -125,16 +136,25 @@ Shu sahifada pastroqda **Environment Variables** bo'limi bor.
 Qiymatlarni kompyuteringizdagi `backend/.env` faylidan ko'chiring
 (uni Notepad bilan oching). **Qo'shtirnoqlarni ko'chirmang!**
 
-| Key (nomi) | Value (qiymati) |
+| № | Key (nomi) | Value (qiymati) | Qayerdan |
+|---|---|---|---|
+| 1 | `DATABASE_URL` | `postgresql://neondb_owner:...` | **`.env` dan ko'chiring** |
+| 2 | `BOT_TOKEN` | `1234567890:AAE...` ko'rinishida | **`.env` dan ko'chiring** |
+| 3 | `BOT_USERNAME` | `K_Beauty_Store_Optom_bot` | **`.env` dan ko'chiring** |
+| 4 | `WEBAPP_URL` | `https://kbeauty-miniapp.vercel.app` | ⚠️ yangi — `.env` dagisi eski! |
+| 5 | `ADMIN_PASSWORD` | *o'zingiz o'ylab toping, 8+ belgi* | ⚠️ yangi — `.env` dagisi ochiq! |
+| 6 | `ALLOW_INSECURE_AUTH` | `false` | ⚠️ yangi — `.env` da `true` turibdi! |
+| 7 | `NODE_VERSION` | `22` | yangi |
+
+**`.env` dan KO'CHIRILMAYDIGANLAR:**
+
+| Kalit | Nega |
 |---|---|
-| `DATABASE_URL` | `.env` dan ko'chiring (`postgresql://` bilan boshlanadi) |
-| `BOT_TOKEN` | `.env` dan ko'chiring |
-| `BOT_USERNAME` | `K_Beauty_Store_Optom_bot` |
-| `ADMIN_PASSWORD` | **YANGI kuchli parol o'ylab toping** (pastdagi izohni o'qing) |
-| `ALLOW_INSECURE_AUTH` | `false` |
-| `NODE_VERSION` | `22` |
-| `WEBAPP_URL` | `https://kbeauty-miniapp.vercel.app` |
-| `API_BASE_URL` | `https://kbeauty-backend.onrender.com` |
+| `PORT` | Render uni o'zi beradi — qo'shsangiz ziyon qiladi |
+| `API_BASE_URL` | Kodda umuman ishlatilmaydi — kerak emas |
+| `WEBAPP_URL` | `.env` dagisi eski vaqtinchalik havola (`trycloudflare.com`) |
+| `ADMIN_PASSWORD` | `.env` dagisi (`kbeauty2025`) GitHub'da ochiq turibdi |
+| `ALLOW_INSECURE_AUTH` | `.env` da `true` — internetda bu **xavfli** |
 
 > 🔐 **ADMIN_PASSWORD majburiy.** Koddagi ochiq zaxira parol (`kbeauty2025`)
 > olib tashlandi — endi parol berilmasa server **umuman ishga tushmaydi** va
