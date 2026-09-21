@@ -1,5 +1,19 @@
 # K-Beauty Store Optom — Internetga chiqarish qo'llanmasi
 
+> ## ✅ HOLAT: TO'LIQ ISHGA TUSHIRILGAN (2026-09-22)
+>
+> | Nima | Havola | Holat |
+> |---|---|---|
+> | Mini App (mijozlar) | https://kbeauty-miniapp.vercel.app | ishlayapti |
+> | Admin panel (siz) | https://kbeauty-admin-sepia.vercel.app | ishlayapti |
+> | Backend + bot | https://k-beauty-0rv9.onrender.com | ishlayapti |
+>
+> Tekshirilgan: mijoz API himoyalangan (401), admin API himoyalangan (401),
+> eski ochiq parol ishlamaydi (401), rasmlar ochiladi (200).
+>
+> **Quyidagi qadamlar tarix uchun qoldirilgan** — qayta qurish kerak bo'lsa yoki
+> nimadir buzilsa, shu yo'riqnomadan foydalanasiz.
+
 Loyiha uch qismdan iborat va ular **uch xil joyda** ishlaydi:
 
 ```
@@ -11,7 +25,7 @@ Loyiha uch qismdan iborat va ular **uch xil joyda** ishlaydi:
          \                             /
           \                           /
            v                         v
-         kbeauty-backend.onrender.com
+         k-beauty-0rv9.onrender.com      
          (API + Telegram bot — Render)
                       |
                       v
@@ -28,9 +42,6 @@ Ikkala frontend allaqachon internetda:
 |---|---|
 | Mini App (mijozlar ko'radi) | https://kbeauty-miniapp.vercel.app |
 | Admin panel (siz ishlatasiz) | https://kbeauty-admin-sepia.vercel.app |
-
-> ⚠️ **Hozir ular hali to'liq ishlamaydi** — backend manzili hali ma'lum emas.
-> Render'ni tugatgach, **3-QISM** ni bajarasiz va hammasi jonlanadi.
 
 > 🚫 **Diqqat:** `kbeauty-admin.vercel.app` (`-sepia` siz) — **begona odamning sayti**.
 > O'sha nom Vercel'da band ekan, shuning uchun bizga `-sepia` qo'shimchali nom berildi.
@@ -178,11 +189,11 @@ Qiymatlarni kompyuteringizdagi `backend/.env` faylidan ko'chiring
 ```
 
 4. Yuqorida yashil **Live** yozuvi va havola paydo bo'ladi.
-   **Shu havolani ko'chirib oling** — masalan `https://kbeauty-backend.onrender.com`
+   **Shu havolani ko'chirib oling** — 3-QISM da kerak bo'ladi.
 
-> Agar havola boshqacha chiqsa (masalan `kbeauty-backend-a1b2.onrender.com`),
-> 4-qadamdagi `API_BASE_URL` ni ham o'shanga to'g'rilang:
-> **Environment** → `API_BASE_URL` → **Edit** → **Save**.
+> Render nomni band bo'lsa o'zgartiradi. Bizda aynan shunday bo'ldi:
+> `kbeauty-backend` o'rniga **`k-beauty-0rv9.onrender.com`** berildi.
+> Shuning uchun havolani taxmin qilmang — Render bergan aniq havolani oling.
 
 ---
 
@@ -213,7 +224,7 @@ Quyidagi qadamlar **ikkala loyiha uchun** takrorlanadi.
 3. Yuqoridan **Settings** → chapdan **Environment Variables**
 4. Quyidagini qo'shing:
    - **Key:** `VITE_API_URL`
-   - **Value:** `https://kbeauty-backend.onrender.com`
+   - **Value:** `https://k-beauty-0rv9.onrender.com`
      *(5-qadamdagi havolangiz — oxirida `/` belgisi BO'LMASIN!)*
    - **Environments:** uchalasi ham belgilansin (Production, Preview, Development)
 5. **Save** bosing
@@ -272,7 +283,7 @@ Agar baribir ishlamasa, BotFather orqali qo'lda o'rnatasiz:
 
 Ketma-ket tekshirib chiqing:
 
-- [ ] `https://kbeauty-backend.onrender.com` → JSON javob beradi
+- [ ] `https://k-beauty-0rv9.onrender.com` → JSON javob beradi
 - [ ] `https://kbeauty-admin-sepia.vercel.app` → parol so'raydi, yangi parol bilan kiradi
 - [ ] Admin panelda 16 ta mahsulot va ularning rasmlari ko'rinadi
 - [ ] Telegram'da botga `/start` → javob beradi
