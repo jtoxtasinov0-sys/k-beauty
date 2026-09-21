@@ -5,12 +5,14 @@
  * Endi avval saqlangan mahsulotlar DARHOL chiziladi, yangisi esa orqa fonda
  * kelib ustiga yozadi. Shuning uchun app bir zumda ochilgandek ko'rinadi.
  */
+import { getItem, setItem } from './storage.js';
+
 const PREFIX = 'kbeauty_cache_';
 const MAX_AGE_MS = 24 * 60 * 60 * 1000; // 1 kun
 
 export function readCache(key, maxAgeMs = MAX_AGE_MS) {
   try {
-    const raw = localStorage.getItem(PREFIX + key);
+    const raw = getItem(PREFIX + key);
     if (!raw) return null;
 
     const { at, value } = JSON.parse(raw);
@@ -24,7 +26,7 @@ export function readCache(key, maxAgeMs = MAX_AGE_MS) {
 
 export function writeCache(key, value) {
   try {
-    localStorage.setItem(PREFIX + key, JSON.stringify({ at: Date.now(), value }));
+    setItem(PREFIX + key, JSON.stringify({ at: Date.now(), value }));
   } catch {
     /* xotirada joy yo'q — app baribir ishlayveradi */
   }

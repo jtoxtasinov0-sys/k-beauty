@@ -3,13 +3,23 @@ import { API_BASE } from './config.js';
 const BASE = API_BASE;
 const TOKEN_KEY = 'kbeauty_admin_token';
 
+// Brauzer xotirasi bloklangan bo'lsa localStorage XATO TASHLAYDI va panel
+// umuman ochilmay qoladi. Shuning uchun har bir murojaat himoyalangan.
 export function getToken() {
-  return localStorage.getItem(TOKEN_KEY) || '';
+  try {
+    return localStorage.getItem(TOKEN_KEY) || '';
+  } catch {
+    return '';
+  }
 }
 
 export function setToken(token) {
-  if (token) localStorage.setItem(TOKEN_KEY, token);
-  else localStorage.removeItem(TOKEN_KEY);
+  try {
+    if (token) localStorage.setItem(TOKEN_KEY, token);
+    else localStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* xotira ishlamasa parol faqat shu sessiyada saqlanadi */
+  }
 }
 
 async function request(path, options = {}) {

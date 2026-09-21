@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, prefetch } from './api.js';
 import { readCache, writeCache } from './cache.js';
+import { getItem, setItem } from './storage.js';
 import { initTelegram, telegramUserId } from './telegram.js';
 import { makeT } from './i18n.js';
 import { useCart } from './store/CartContext.jsx';
@@ -30,8 +31,8 @@ const cachedBoot = !telegramUserId || savedBoot.tgId === telegramUserId ? savedB
 export default function App() {
   const cart = useCart();
 
-  const [lang, setLangState] = useState(() => localStorage.getItem(LANG_KEY) || 'uz');
-  const [onboarded, setOnboarded] = useState(() => localStorage.getItem(ONBOARD_KEY) === '1');
+  const [lang, setLangState] = useState(() => getItem(LANG_KEY) || 'uz');
+  const [onboarded, setOnboarded] = useState(() => getItem(ONBOARD_KEY) === '1');
 
   const [user, setUser] = useState(cachedBoot.user || null);
   const [categories, setCategories] = useState(cachedBoot.categories || []);
@@ -52,7 +53,7 @@ export default function App() {
 
   const setLang = useCallback((value) => {
     setLangState(value);
-    localStorage.setItem(LANG_KEY, value);
+    setItem(LANG_KEY, value);
   }, []);
 
   // ===== Ishga tushirish =====
@@ -75,7 +76,7 @@ export default function App() {
           regions: data.regions,
         });
 
-        if (!localStorage.getItem(LANG_KEY) && data.user?.language) setLang(data.user.language);
+        if (!getItem(LANG_KEY) && data.user?.language) setLang(data.user.language);
       })
       .catch((e) => console.error('me() xatosi:', e.message))
       .finally(() => setBooted(true));
@@ -158,7 +159,7 @@ export default function App() {
       <Onboarding
         t={t}
         onDone={() => {
-          localStorage.setItem(ONBOARD_KEY, '1');
+          setItem(ONBOARD_KEY, '1');
           setOnboarded(true);
         }}
       />
