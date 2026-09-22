@@ -42,6 +42,47 @@ export const User = {
   count() {
     return prisma.user.count();
   },
+
+  /**
+   * Admin panel uchun mijozlar ro'yxati: Telegram profili, telefoni va
+   * buyurtmalar bo'yicha qisqacha hisob.
+   *
+   * updatedAt — "oxirgi faollik": mijoz Mini App'ni har ochganda profili
+   * qayta yoziladi, shuning uchun bu maydon oxirgi kirgan vaqtni ko'rsatadi.
+   */
+  async listForAdmin() {
+    const users = await prisma.user.findMany({
+      orderBy: { updatedAt: 'desc' },
+      take: 500,
+      include: {
+        orders: {
+          select: { id: true, totalWon: true, status: true, createdAt: true },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    return users.map((user) => {
+      // Bekor qilingan buyurtmalar umumiy summaga qo'shilmaydi
+      const counted = user.orders.filter((o) => o.status !== 'CANCELLED');
+
+      return {
+        id: user.id,
+        telegramId: user.telegramId,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        phone: user.phone,
+        language: user.language,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        orderCount: user.orders.length,
+        totalWon: counted.reduce((sum, o) => sum + o.totalWon, 0),
+        lastOrderAt: user.orders[0]?.createdAt || null,
+        orders: user.orders,
+      };
+    });
+  },
 };
 
 export default User;

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api, won } from '../api.js';
+import { CustomerCard } from './Customers.jsx';
 
 const AUTO_REFRESH_MS = 15000;
 
@@ -18,6 +19,7 @@ export default function Orders({ meta, onToast }) {
   const [status, setStatus] = useState('all');
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
+  const [customer, setCustomer] = useState(null); // ochilgan mijoz kartochkasi
 
   const load = useCallback(
     async (silent = false) => {
@@ -153,13 +155,24 @@ export default function Orders({ meta, onToast }) {
                       <b>#{order.id}</b>
                     </td>
 
-                    <td>
+                    {/* Bosilsa — mijozning to'liq profili ochiladi */}
+                    <td
+                      className={order.user ? 'row-click' : undefined}
+                      onClick={() => order.user && setCustomer(order.user)}
+                      title={order.user ? "Profilni ko'rish" : undefined}
+                    >
                       <div className="cell-name">{order.customerName}</div>
                       <div className="cell-sub">
-                        <a href={`tel:${order.phone}`}>{order.phone}</a>
+                        <a href={`tel:${order.phone}`} onClick={(e) => e.stopPropagation()}>
+                          {order.phone}
+                        </a>
                       </div>
-                      {order.user?.username && (
-                        <div className="cell-sub">@{order.user.username}</div>
+                      {order.user && (
+                        <div className="cell-sub">
+                          {order.user.username ? `@${order.user.username}` : 'username yo‘q'}
+                          {' · ID '}
+                          {order.user.telegramId}
+                        </div>
                       )}
                     </td>
 
@@ -215,6 +228,8 @@ export default function Orders({ meta, onToast }) {
           </table>
         </div>
       )}
+
+      {customer && <CustomerCard user={customer} onClose={() => setCustomer(null)} />}
     </div>
   );
 }

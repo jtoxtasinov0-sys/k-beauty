@@ -13,6 +13,7 @@ import {
   deleteProduct,
   uploadImage,
   upload,
+  getUsers,
   getStories,
   createStory,
   updateStory,
@@ -38,6 +39,8 @@ router.get('/products', getProducts);
 router.post('/products', createProduct);
 router.put('/products/:id', updateProduct);
 router.delete('/products/:id', deleteProduct);
+
+router.get('/users', getUsers);
 
 router.get('/stories', getStories);
 router.post('/stories', createStory);

@@ -4,6 +4,7 @@ import Login from './pages/Login.jsx';
 import Orders from './pages/Orders.jsx';
 import Products from './pages/Products.jsx';
 import Stories from './pages/Stories.jsx';
+import Customers from './pages/Customers.jsx';
 
 export default function App() {
   const [authed, setAuthed] = useState(() => Boolean(getToken()));
@@ -58,6 +59,9 @@ export default function App() {
           <button className={tab === 'stories' ? 'on' : ''} onClick={() => setTab('stories')}>
             🎬 Storylar
           </button>
+          <button className={tab === 'customers' ? 'on' : ''} onClick={() => setTab('customers')}>
+            👥 Mijozlar
+          </button>
         </nav>
 
         <button className="logout" onClick={logout}>
@@ -68,6 +72,7 @@ export default function App() {
       {tab === 'orders' && <Orders meta={meta} onToast={showToast} />}
       {tab === 'products' && <Products meta={meta} onToast={showToast} />}
       {tab === 'stories' && <Stories onToast={showToast} />}
+      {tab === 'customers' && <Customers onToast={showToast} />}
 
       {toast && <div className="toast">{toast}</div>}
     </>

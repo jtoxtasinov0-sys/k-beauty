@@ -618,3 +618,95 @@ tr:hover td {
   flex-shrink: 0;
   accent-color: #e93368;
 }
+
+/* ===================== MIJOZLAR ===================== */
+.search-input {
+  flex: 1;
+  min-width: 240px;
+  max-width: 460px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line, #e6e8ec);
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #e93368;
+}
+
+/* Bosilsa mijoz kartochkasi ochiladigan qatorlar */
+.row-click {
+  cursor: pointer;
+}
+
+/* Mijozlar sahifasida klass <tr> da, Buyurtmalarda esa <td> da turadi */
+.row-click:hover td,
+td.row-click:hover {
+  background: #fdf2f6;
+}
+
+/* --- mijoz kartochkasi --- */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 2px;
+  border-bottom: 1px solid var(--line, #eef0f3);
+  font-size: 14px;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row > span {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.info-row > b {
+  text-align: right;
+  word-break: break-word;
+}
+
+.modal-subhead {
+  margin: 18px 0 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.mini-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 210px;
+  overflow-y: auto;
+}
+
+.mini-order {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #f7f8fa;
+  border-radius: 10px;
+  font-size: 13.5px;
+}
+
+.mini-order > span {
+  color: #6b7280;
+}

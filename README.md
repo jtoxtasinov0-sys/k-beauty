@@ -275,6 +275,11 @@ qolganini o'chirib qo'yish kifoya — qayta yuklash shart emas.
 
 - **📦 Buyurtmalar** — mijoz ismi, telefoni, nima olgani, optom belgisi, jami summa, manzil, sana.
   Holatni o'zgartirish: Yangi → Tasdiqlandi → Jo'natildi → Yetkazildi.
+- **👥 Mijozlar** — kim kirgan, qaysi Telegram profilidan va qaysi raqamdan.
+  Qatorni bosing — to'liq kartochka ochiladi: @username, Telegram ID, telefon,
+  til, birinchi kirgan sana, oxirgi faollik va barcha buyurtmalari.
+  Ism, @username, telefon yoki ID bo'yicha qidirish bor.
+  Buyurtmalar bo'limida ham mijoz ustiga bossangiz shu kartochka ochiladi.
 - **🎬 Storylar** — bosh sahifadagi dumaloqlar. «Faol» belgisi bilan kunda almashtiriladi (7-bo'lim).
 - **🧴 Mahsulotlar** — qo'shish, tahrirlash, o'chirish.
   Rasm **galereyadan** yuklanadi (`📷 Galereyadan rasm tanlash`), maksimal 8 MB.

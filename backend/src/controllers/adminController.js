@@ -184,3 +184,14 @@ export async function deleteStory(req, res, next) {
     next(error);
   }
 }
+
+// ==================== MIJOZLAR ====================
+
+/** Kim kirgan, qaysi profil va telefon — hammasi bitta ro'yxatda. */
+export async function getUsers(_req, res, next) {
+  try {
+    res.json({ users: await User.listForAdmin() });
+  } catch (error) {
+    next(error);
+  }
+}
