@@ -49,6 +49,12 @@ export const api = {
     request(`/orders/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
   deleteOrder: (id) => request(`/orders/${id}`, { method: 'DELETE' }),
 
+  stories: () => request('/stories'),
+  createStory: (body) => request('/stories', { method: 'POST', body: JSON.stringify(body) }),
+  updateStory: (id, body) =>
+    request(`/stories/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteStory: (id) => request(`/stories/${id}`, { method: 'DELETE' }),
+
   products: () => request('/products'),
   createProduct: (body) => request('/products', { method: 'POST', body: JSON.stringify(body) }),
   updateProduct: (id, body) =>

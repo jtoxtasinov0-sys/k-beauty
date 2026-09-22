@@ -7,6 +7,7 @@ import {
   getMyOrders,
   createOrder,
   updateProfile,
+  getStories,
 } from '../controllers/cartController.js';
 
 const router = Router();
@@ -16,6 +17,8 @@ router.use(clientAuth);
 
 router.get('/me', getMe);
 router.patch('/me', updateProfile);
+
+router.get('/stories', getStories);
 
 router.get('/products', getProducts);
 router.get('/products/:id', getProduct);

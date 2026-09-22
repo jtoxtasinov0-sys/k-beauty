@@ -55,6 +55,25 @@ model Product {
   @@map("products")
 }
 
+// ============ STORY ============
+// Bosh sahifadagi dumaloq storylar. Admin panelda qo'shiladi va
+// "faol" belgisi bilan kundan-kunga almashtirib turiladi.
+model Story {
+  id        Int     @id @default(autoincrement())
+  title     String                     // O'zbekcha sarlavha
+  titleRu   String?                    // Ruscha sarlavha
+  imageUrl  String                     // /uploads/xxx.webp
+  productId Int?                       // Bosilganda ochiladigan mahsulot (ixtiyoriy)
+  active    Boolean @default(true)     // Faqat faollari mijozga ko'rinadi
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, sortOrder])
+  @@map("stories")
+}
+
 // ============ BUYURTMA ============
 model Order {
   id     Int  @id @default(autoincrement())

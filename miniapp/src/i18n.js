@@ -32,6 +32,7 @@ export const STRINGS = {
     nothingFound: 'Hech narsa topilmadi',
     loading: 'Yuklanmoqda...',
     wakingUp: "Server uyg'onmoqda, biroz kuting...",
+    openProduct: 'Mahsulotni ochish',
 
     // Mahsulot
     composition: 'Tarkibi va tavsifi',
@@ -123,6 +124,7 @@ export const STRINGS = {
     nothingFound: 'Ничего не найдено',
     loading: 'Загрузка...',
     wakingUp: 'Сервер просыпается, подождите...',
+    openProduct: 'Открыть товар',
 
     composition: 'Состав и описание',
     piece: 'За штуку',

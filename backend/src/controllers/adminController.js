@@ -4,6 +4,7 @@ import multer from 'multer';
 import { config, CATEGORIES, ORDER_STATUSES, REGIONS } from '../config/default.js';
 import Product from '../models/Product.js';
 import Order from '../models/Order.js';
+import Story from '../models/Story.js';
 import User from '../models/User.js';
 import { sendStatusUpdate } from './botController.js';
 
@@ -141,6 +142,43 @@ export async function deleteProduct(req, res, next) {
       fs.rm(file, { force: true }, () => {});
     }
 
+    res.json({ ok: true });
+  } catch (error) {
+    next(error);
+  }
+}
+
+// ==================== STORYLAR (CRUD) ====================
+
+export async function getStories(_req, res, next) {
+  try {
+    res.json({ stories: await Story.listAll() });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createStory(req, res, next) {
+  try {
+    const story = await Story.create(req.body);
+    res.status(201).json({ story });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateStory(req, res, next) {
+  try {
+    const story = await Story.update(req.params.id, req.body);
+    res.json({ story });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteStory(req, res, next) {
+  try {
+    await Story.remove(req.params.id);
     res.json({ ok: true });
   } catch (error) {
     next(error);

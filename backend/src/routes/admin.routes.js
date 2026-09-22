@@ -13,6 +13,10 @@ import {
   deleteProduct,
   uploadImage,
   upload,
+  getStories,
+  createStory,
+  updateStory,
+  deleteStory,
 } from '../controllers/adminController.js';
 
 const router = Router();
@@ -34,6 +38,11 @@ router.get('/products', getProducts);
 router.post('/products', createProduct);
 router.put('/products/:id', updateProduct);
 router.delete('/products/:id', deleteProduct);
+
+router.get('/stories', getStories);
+router.post('/stories', createStory);
+router.put('/stories/:id', updateStory);
+router.delete('/stories/:id', deleteStory);
 
 router.post('/upload', upload.single('image'), uploadImage);
 

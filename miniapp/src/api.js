@@ -59,6 +59,7 @@ export const api = {
     ).toString();
     return request(`/products${qs ? `?${qs}` : ''}`);
   },
+  stories: () => request('/stories'),
   myOrders: () => request('/orders'),
   createOrder: (body) => request('/orders', { method: 'POST', body: JSON.stringify(body) }),
 };
@@ -71,6 +72,7 @@ export const api = {
 export const prefetch = {
   me: api.me().catch((error) => ({ __error: error })),
   products: api.products().catch((error) => ({ __error: error })),
+  stories: api.stories().catch((error) => ({ __error: error })),
 };
 
 /** /uploads/... ni to'liq havolaga aylantiradi. */

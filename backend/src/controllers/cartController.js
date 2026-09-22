@@ -1,5 +1,6 @@
 import { CATEGORIES, REGIONS } from '../config/default.js';
 import Product from '../models/Product.js';
+import Story from '../models/Story.js';
 import Order from '../models/Order.js';
 import User from '../models/User.js';
 import { sendOrderConfirmation } from './botController.js';
@@ -132,6 +133,24 @@ export async function createOrder(req, res, next) {
     sendOrderConfirmation(order);
 
     res.status(201).json({ order: { id: order.id, totalWon: order.totalWon } });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/** Bosh sahifadagi storylar — faqat admin faol qilib qo'yganlari. */
+export async function getStories(_req, res, next) {
+  try {
+    const stories = await Story.listActive();
+    res.json({
+      stories: stories.map((s) => ({
+        id: s.id,
+        title: s.title,
+        titleRu: s.titleRu,
+        imageUrl: s.imageUrl,
+        productId: s.productId,
+      })),
+    });
   } catch (error) {
     next(error);
   }

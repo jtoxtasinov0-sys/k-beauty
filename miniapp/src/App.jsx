@@ -13,15 +13,18 @@ import Cart from './pages/Cart.jsx';
 import Profile from './pages/Profile.jsx';
 import BottomNav from './components/BottomNav.jsx';
 import ProductSheet from './components/ProductSheet.jsx';
+import StoryViewer from './components/StoryViewer.jsx';
 
 const ONBOARD_KEY = 'kbeauty_onboarded_v1';
 const LANG_KEY = 'kbeauty_lang';
 const BOOT_CACHE = 'boot';
 const PRODUCTS_CACHE = 'products';
+const STORIES_CACHE = 'stories';
 
 // Oxirgi marta ko'rilgan ma'lumotlar — app ochilishi bilanoq chiziladi,
 // serverdan javob kutilmaydi. Yangisi kelgach ustiga yoziladi.
 const cachedProducts = readCache(PRODUCTS_CACHE) || [];
+const cachedStories = readCache(STORIES_CACHE) || [];
 
 // Profil ma'lumoti faqat O'SHA hisob uchun ishlatiladi: bitta telefonda
 // boshqa akkaunt ochsa, avvalgi mijozning ismi ko'rinib qolmasligi kerak.
@@ -47,6 +50,8 @@ export default function App() {
   const [category, setCategory] = useState('all');
   const [search, setSearch] = useState('');
   const [sheetProduct, setSheetProduct] = useState(null);
+  const [stories, setStories] = useState(cachedStories);
+  const [storyIndex, setStoryIndex] = useState(null); // null = yopiq
   const [orders, setOrders] = useState([]);
 
   const t = makeT(lang);
@@ -87,6 +92,18 @@ export default function App() {
       .catch((e) => console.error('me() xatosi:', e.message))
       .finally(() => setBooted(true));
   }, [setLang]);
+
+  // ===== Storylar =====
+  // Ro'yxat admin panelda tuziladi; bu yerda faqat ko'rsatamiz.
+  useEffect(() => {
+    prefetch.stories
+      .then((data) => {
+        if (data?.__error) throw data.__error;
+        setStories(data.stories);
+        writeCache(STORIES_CACHE, data.stories);
+      })
+      .catch((e) => console.error('stories() xatosi:', e.message));
+  }, []);
 
   // Server uxlab qolgan bo'lsa birinchi javob kechikadi — foydalanuvchi
   // nima bo'layotganini bilib tursin.
@@ -145,10 +162,13 @@ export default function App() {
     setTab('catalog');
   }
 
-  function selectBrand(brand) {
-    setSearch(brand);
-    setCategory('all');
-    setTab('catalog');
+  /** Story ichidagi tugma bosilganda mahsulot kartochkasini ochadi. */
+  function openStoryProduct(productId) {
+    const product = products.find((p) => p.id === productId);
+    setStoryIndex(null);
+
+    if (product) setSheetProduct(product);
+    else setTab('catalog'); // mahsulot topilmadi (o'chirilgan bo'lishi mumkin)
   }
 
   function repeatOrder(items) {
@@ -191,6 +211,8 @@ export default function App() {
         <Home
           user={user}
           products={products}
+          stories={stories}
+          onOpenStory={setStoryIndex}
           loading={loading && products.length === 0}
           lang={lang}
           setLang={setLang}
@@ -198,7 +220,6 @@ export default function App() {
           onOpenProduct={setSheetProduct}
           onQuickAdd={(product) => cart.add(product, 1)}
           onGoCatalog={goCatalog}
-          onSelectBrand={selectBrand}
           t={t}
         />
       )}
@@ -251,6 +272,17 @@ export default function App() {
       )}
 
       <BottomNav tab={tab} onChange={setTab} cartCount={cart.count} t={t} />
+
+      {storyIndex !== null && stories.length > 0 && (
+        <StoryViewer
+          stories={stories}
+          startIndex={storyIndex}
+          lang={lang}
+          onClose={() => setStoryIndex(null)}
+          onOpenProduct={openStoryProduct}
+          t={t}
+        />
+      )}
 
       {sheetProduct && (
         <ProductSheet

@@ -5,6 +5,8 @@ import { haptic } from '../telegram.js';
 export default function Home({
   user,
   products,
+  stories,
+  onOpenStory,
   loading,
   lang,
   setLang,
@@ -12,7 +14,6 @@ export default function Home({
   onQuickAdd,
   qtyOf,
   onGoCatalog,
-  onSelectBrand,
   t,
 }) {
   const popular = products.slice(0, 4);
@@ -37,7 +38,7 @@ export default function Home({
         </div>
       </div>
 
-      <Stories products={products} onSelect={onSelectBrand} />
+      <Stories stories={stories} lang={lang} onOpen={onOpenStory} />
 
       <div className="hero">
         <h3>{t('heroTitle')}</h3>

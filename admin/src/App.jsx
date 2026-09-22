@@ -3,6 +3,7 @@ import { api, getToken, setToken } from './api.js';
 import Login from './pages/Login.jsx';
 import Orders from './pages/Orders.jsx';
 import Products from './pages/Products.jsx';
+import Stories from './pages/Stories.jsx';
 
 export default function App() {
   const [authed, setAuthed] = useState(() => Boolean(getToken()));
@@ -54,6 +55,9 @@ export default function App() {
           <button className={tab === 'products' ? 'on' : ''} onClick={() => setTab('products')}>
             🧴 Mahsulotlar
           </button>
+          <button className={tab === 'stories' ? 'on' : ''} onClick={() => setTab('stories')}>
+            🎬 Storylar
+          </button>
         </nav>
 
         <button className="logout" onClick={logout}>
@@ -63,6 +67,7 @@ export default function App() {
 
       {tab === 'orders' && <Orders meta={meta} onToast={showToast} />}
       {tab === 'products' && <Products meta={meta} onToast={showToast} />}
+      {tab === 'stories' && <Stories onToast={showToast} />}
 
       {toast && <div className="toast">{toast}</div>}
     </>

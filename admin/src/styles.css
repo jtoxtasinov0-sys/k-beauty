@@ -585,3 +585,36 @@ tr:hover td {
     padding: 16px 12px;
   }
 }
+
+/* ===================== STORYLAR ===================== */
+.hint-line {
+  margin: -6px 0 16px;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Faol emas storylar jadvalda xiraroq ko'rinadi */
+.row-off td {
+  opacity: 0.45;
+}
+
+.field label.checkline {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink, #14181f);
+  padding: 9px 0;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.field label.checkline input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: #e93368;
+}

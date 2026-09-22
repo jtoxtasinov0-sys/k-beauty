@@ -220,7 +220,45 @@ Bot buyruqlari: `/start` · `/menu` · `/til` · `/id` · `/help`
 
 ---
 
-## 8. Qanday ishlaydi
+## 8. Storylar (bosh sahifadagi dumaloqlar)
+
+Mijozning bosh sahifasida yuqorida dumaloq storylar turadi — Instagram'dagidek.
+Ro'yxat **admin panelda** tuziladi, kodda hech narsa o'ylab topilmaydi.
+
+### Mijoz tomonda
+
+| Harakat | Nima bo'ladi |
+|---|---|
+| Storyni bosdi | To'liq ekranda rasm ochiladi (katalogga o'tib ketmaydi) |
+| O'ng tomonga bosdi | Keyingi story |
+| Chap chetiga bosdi | Oldingi story |
+| Hech narsa qilmadi | 5 soniyada o'zi keyingisiga o'tadi, oxirida yopiladi |
+| Mahsulotga bog'langan story | Pastda **"Mahsulotni ochish"** tugmasi chiqadi |
+
+### Admin panelda: 🎬 Storylar
+
+- **➕ Yangi story** → ro'yxatdan mahsulot tanlang — rasm va sarlavha
+  **o'zi to'ldiriladi**. Mijoz storyni bosganda o'sha mahsulot ochiladi.
+- Mahsulotsiz ham bo'ladi: o'z rasmingizni yuklab, faqat e'lon sifatida qo'ying.
+- **Tartib raqami** — kichik raqam chapda turadi.
+
+### Kunda almashtirib turish
+
+Eskisini **o'chirmang** — «Faol» tugmasini bosib o'chirib qo'ying. Faqat faol
+storylar mijozga ko'rinadi. Ertasiga yana bir bosishda qaytarasiz.
+
+Masalan, 7 ta story tayyorlab qo'ysangiz, har kuni bittasini yoqib,
+qolganini o'chirib qo'yish kifoya — qayta yuklash shart emas.
+
+> Story qo'shilmagan bo'lsa, dumaloqlar qatori umuman ko'rinmaydi —
+> bo'sh joy qolmaydi.
+
+> ⚙️ `stories` jadvali bazada **o'zi yaratiladi** (server ishga tushganda
+> tekshiriladi) — Neon'da qo'lda hech narsa qilish shart emas.
+
+---
+
+## 9. Qanday ishlaydi
 
 | Qadam | Nima bo'ladi |
 |---|---|
@@ -233,10 +271,11 @@ Bot buyruqlari: `/start` · `/menu` · `/til` · `/id` · `/help`
 
 ---
 
-## 9. Admin Panel
+## 10. Admin Panel
 
 - **📦 Buyurtmalar** — mijoz ismi, telefoni, nima olgani, optom belgisi, jami summa, manzil, sana.
   Holatni o'zgartirish: Yangi → Tasdiqlandi → Jo'natildi → Yetkazildi.
+- **🎬 Storylar** — bosh sahifadagi dumaloqlar. «Faol» belgisi bilan kunda almashtiriladi (7-bo'lim).
 - **🧴 Mahsulotlar** — qo'shish, tahrirlash, o'chirish.
   Rasm **galereyadan** yuklanadi (`📷 Galereyadan rasm tanlash`), maksimal 8 MB.
   "Nalichi" belgisini jadvalda bir bosishda o'zgartirsa bo'ladi.
@@ -250,7 +289,7 @@ Bot buyruqlari: `/start` · `/menu` · `/til` · `/id` · `/help`
 
 ---
 
-## 10. Muhim eslatmalar
+## 11. Muhim eslatmalar
 
 - `backend/.env` faylini hech kimga bermang va GitHub'ga yuklamang — bot tokeni va baza paroli shunda.
 - Loyihani haqiqiy foydalanuvchilarga ochishdan oldin `ALLOW_INSECURE_AUTH=false` qiling
