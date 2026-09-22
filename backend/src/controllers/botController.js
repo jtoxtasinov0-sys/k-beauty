@@ -1,11 +1,15 @@
 import bot from '../core/bot.js';
 import { config, REGIONS, isTemporaryHost } from '../config/default.js';
+import {
+  texts,
+  normalizeLang,
+  formatWon,
+  ASK_LANGUAGE,
+  LANGUAGE_KEYBOARD,
+} from '../config/botText.js';
 import User from '../models/User.js';
 
-/** 8000 -> "8 000 ₩" */
-export function formatWon(value) {
-  return `${Number(value || 0).toLocaleString('ru-RU')} ₩`;
-}
+export { formatWon };
 
 /** Menu tugmasining oxirgi holati — `/` sahifasida ko'rsatiladi. */
 const menuButtonState = { status: 'kutilmoqda', url: null, checkedAt: null, error: null };
@@ -21,92 +25,142 @@ export function getBotStatus() {
   };
 }
 
-/** WebApp tugmasi faqat https havola bilan ishlaydi (ngrok kerak). */
-function webAppKeyboard() {
+/** Mijozning saqlangan tili (topilmasa — o'zbekcha). */
+async function langOf(telegramId) {
+  try {
+    const user = await User.findByTelegramId(telegramId);
+    return normalizeLang(user?.language);
+  } catch {
+    return 'uz';
+  }
+}
+
+/** WebApp tugmasi faqat https havola bilan ishlaydi (tunnel yoki hosting kerak). */
+function webAppKeyboard(lang) {
   const url = config.bot.webAppUrl;
+  const t = texts(lang);
 
   if (!url.startsWith('https://')) {
     return {
-      inline_keyboard: [[{ text: '🛍 Do‘konni ochish', url: 'https://t.me/' + config.bot.username }]],
+      inline_keyboard: [[{ text: t.openShop, url: 'https://t.me/' + config.bot.username }]],
     };
   }
 
   return {
-    inline_keyboard: [[{ text: '🛍 Do‘konni ochish', web_app: { url } }]],
+    inline_keyboard: [[{ text: t.openShop, web_app: { url } }]],
   };
 }
 
-const WELCOME = `<b>K-Beauty Store Optom</b> 🇰🇷
+/** Til tanlash tugmalarini yuboradi. */
+function askLanguage(chatId) {
+  return bot.sendMessage(chatId, ASK_LANGUAGE, { reply_markup: LANGUAGE_KEYBOARD });
+}
 
-Koreyadan original kosmetika — <b>donaga</b> va <b>optom</b> narxlarda.
+/** Salomlashuv xabari — mijozning tilida. */
+async function sendWelcome(chatId, lang) {
+  const t = texts(lang);
 
-🧴 ANUA, MEDIPEEL, LACTOFIT, AXIS-Y va boshqa brendlar
-📦 Koreya ichi va O‘zbekistonga yetkazib berish
-💰 Ko‘p olsangiz — avtomatik optom narx
+  await bot.sendMessage(chatId, t.welcome, {
+    parse_mode: 'HTML',
+    reply_markup: webAppKeyboard(lang),
+  });
 
-Pastdagi tugmani bosib katalogni ko‘ring 👇`;
-
-const HELP = `<b>Yordam</b>
-
-/start — do‘konni ochish
-/menu — do‘kon tugmasini yangilash
-/id — Telegram ID raqamingiz
-/help — shu xabar
-
-ℹ️ Agar eski xabardagi tugma ochilmasa (masalan “Error 1033” chiqsa),
-/menu yuboring — yangi ishlaydigan tugma keladi.
-
-Savollar bo‘lsa shu yerga yozib qoldiring, operator javob beradi.`;
+  if (!config.bot.webAppUrl.startsWith('https://')) {
+    await bot.sendMessage(chatId, t.notConnected);
+  }
+}
 
 /** Bot buyruqlari va handlerlarini ro'yxatdan o'tkazadi. */
 export function registerBotHandlers() {
   bot.onText(/^\/start/, async (msg) => {
+    let user = null;
+    let isNew = false;
+    let dbOk = true;
+
     try {
-      await User.findOrCreateFromTelegram(msg.from);
+      // Avval qarab olamiz: bu odam bizda bormi? Shu orqali "yangi mijoz"ni
+      // bazaga qo'shimcha ustun qo'shmasdan aniqlaymiz.
+      const existing = await User.findByTelegramId(msg.from.id);
+      isNew = !existing;
+      user = await User.findOrCreateFromTelegram(msg.from);
     } catch (error) {
+      dbOk = false;
       console.error('User saqlashda xato:', error.message);
     }
 
-    await bot.sendMessage(msg.chat.id, WELCOME, {
-      parse_mode: 'HTML',
-      reply_markup: webAppKeyboard(),
-    });
-
-    if (!config.bot.webAppUrl.startsWith('https://')) {
-      await bot.sendMessage(
-        msg.chat.id,
-        '⚙️ Mini App hali ulanmagan. WEBAPP_URL ga https havola qo‘ying '
-          + '(hostingda Render → Environment, kompyuterda backend/.env).',
-      );
+    // Yangi mijozdan birinchi navbatda tilni so'raymiz.
+    if (dbOk && isNew) {
+      await askLanguage(msg.chat.id);
+      return;
     }
+
+    await sendWelcome(msg.chat.id, user?.language);
+  });
+
+  // Tilni istalgan payt o'zgartirish
+  bot.onText(/^\/(til|til'|lang|language|yazyk)/i, async (msg) => {
+    await askLanguage(msg.chat.id);
+  });
+
+  // Til tanlanganda
+  bot.on('callback_query', async (query) => {
+    const data = query.data || '';
+    if (!data.startsWith('lang:')) return;
+
+    const lang = normalizeLang(data.slice('lang:'.length));
+    const t = texts(lang);
+    const chatId = query.message?.chat?.id;
+
+    try {
+      const user = await User.findOrCreateFromTelegram(query.from);
+      await User.update(user.id, { language: lang });
+    } catch (error) {
+      console.error('Tilni saqlashda xato:', error.message);
+    }
+
+    try {
+      await bot.answerCallbackQuery(query.id, { text: t.langSaved });
+    } catch {
+      /* tugma eskirgan bo'lsa e'tiborsiz */
+    }
+
+    if (!chatId) return;
+
+    // Tugmalarni olib tashlaymiz — ikki marta bosilmasin
+    try {
+      await bot.editMessageText(t.langSaved, {
+        chat_id: chatId,
+        message_id: query.message.message_id,
+      });
+    } catch {
+      /* xabarni tahrirlab bo'lmasa ham davom etamiz */
+    }
+
+    await sendWelcome(chatId, lang);
   });
 
   // Eski xabardagi tugma o'lik havolaga olib boradi (masalan o'chirilgan
   // tunnelga). /menu har doim YANGI, ishlaydigan tugma yuboradi.
-  bot.onText(/^\/(menu|app|dokon|do'kon)/i, async (msg) => {
-    const url = config.bot.webAppUrl;
+  bot.onText(/^\/(menu|app|dokon|do'kon|magazin)/i, async (msg) => {
+    const lang = await langOf(msg.from.id);
+    const t = texts(lang);
 
-    if (!url.startsWith('https://')) {
-      await bot.sendMessage(
-        msg.chat.id,
-        '⚠️ Do‘kon havolasi hozir sozlanmagan. Operator bilan bog‘laning.',
-      );
+    if (!config.bot.webAppUrl.startsWith('https://')) {
+      await bot.sendMessage(msg.chat.id, t.shopNotReady);
       return;
     }
 
-    await bot.sendMessage(msg.chat.id, '✅ Do‘kon tayyor — pastdagi tugmani bosing 👇', {
-      reply_markup: webAppKeyboard(),
-    });
+    await bot.sendMessage(msg.chat.id, t.shopReady, { reply_markup: webAppKeyboard(lang) });
   });
 
-  bot.onText(/^\/help/, (msg) => {
-    bot.sendMessage(msg.chat.id, HELP, { parse_mode: 'HTML' });
+  bot.onText(/^\/help/, async (msg) => {
+    const t = texts(await langOf(msg.from.id));
+    bot.sendMessage(msg.chat.id, t.help, { parse_mode: 'HTML' });
   });
 
-  bot.onText(/^\/id/, (msg) => {
-    bot.sendMessage(msg.chat.id, `Sizning Telegram ID: <code>${msg.from.id}</code>`, {
-      parse_mode: 'HTML',
-    });
+  bot.onText(/^\/id/, async (msg) => {
+    const t = texts(await langOf(msg.from.id));
+    bot.sendMessage(msg.chat.id, t.yourId(msg.from.id), { parse_mode: 'HTML' });
   });
 
   // Telefon raqam yuborilsa profilga saqlanadi
@@ -115,7 +169,7 @@ export function registerBotHandlers() {
       const user = await User.findByTelegramId(msg.from.id);
       if (user) {
         await User.update(user.id, { phone: msg.contact.phone_number });
-        await bot.sendMessage(msg.chat.id, '✅ Telefon raqamingiz saqlandi.');
+        await bot.sendMessage(msg.chat.id, texts(user.language).phoneSaved);
       }
     } catch (error) {
       console.error('Kontakt saqlashda xato:', error.message);
@@ -167,7 +221,15 @@ async function clearStaleMenuButton() {
   }
 }
 
-/** Menu tugmasini (pastdagi "Do'kon" tugmasi) o'rnatadi. */
+/**
+ * Menu tugmasini (pastdagi "Do'kon" tugmasi) o'rnatadi.
+ *
+ * Diqqat: tugma ATAYLAB hamma uchun bitta qilib qo'yilgan (chat_id berilmaydi).
+ * Har bir mijozga alohida tugma qo'yilsa, keyinchalik havola o'zgarganda
+ * umumiy tuzatish ularga yetib bormaydi va yana o'lik havola qolib ketadi.
+ * Shuning uchun tugma matni tarjima qilinmaydi — xabarlardagi tugmalar esa
+ * mijozning tilida bo'ladi.
+ */
 export async function setupMenuButton() {
   const url = config.bot.webAppUrl;
 
@@ -208,29 +270,32 @@ export async function setupMenuButton() {
 
 /** Buyurtma bazaga tushgach mijozga yuboriladigan tasdiq xabari. */
 export async function sendOrderConfirmation(order) {
+  const lang = normalizeLang(order.user?.language);
+  const t = texts(lang);
+
   const region = REGIONS.find((r) => r.key === order.region);
+  const regionName = region ? `${region.flag} ${lang === 'ru' ? region.ru : region.uz}` : order.region;
   const items = Array.isArray(order.items) ? order.items : [];
 
   const lines = items
     .map((item, i) => {
-      const badge = item.isWholesale ? ' 🏷 optom' : '';
+      const badge = item.isWholesale ? t.wholesaleBadge : '';
       return `${i + 1}. ${item.name}\n    ${item.qty} × ${formatWon(item.unitPrice)}${badge} = <b>${formatWon(item.sum)}</b>`;
     })
     .join('\n');
 
-  const text = `✅ <b>Buyurtmangiz muvaffaqiyatli qabul qilindi!</b>
-Kuryerimiz tez orada bog‘lanadi 💄
+  const text = `${t.orderTitle}
 
-<b>Buyurtma №${order.id}</b>
+${t.orderNo(order.id)}
 
 ${lines}
 
 ━━━━━━━━━━━━━━
-💰 Jami: <b>${formatWon(order.totalWon)}</b>
-📍 Manzil: ${region ? region.flag + ' ' + region.uz : order.region} — ${order.address}
-📞 Telefon: ${order.phone}
+💰 ${t.orderTotal}: <b>${formatWon(order.totalWon)}</b>
+📍 ${t.orderAddress}: ${regionName} — ${order.address}
+📞 ${t.orderPhone}: ${order.phone}
 
-<i>Pochta narxi operator bilan alohida kelishiladi.</i>`;
+${t.orderNote}`;
 
   try {
     await bot.sendMessage(order.user.telegramId, text, { parse_mode: 'HTML' });
@@ -241,18 +306,12 @@ ${lines}
 
 /** Admin buyurtma holatini o'zgartirganda mijozga xabar beradi. */
 export async function sendStatusUpdate(order) {
-  const messages = {
-    CONFIRMED: `👌 Buyurtma №${order.id} tasdiqlandi. Tayyorlashni boshladik!`,
-    SHIPPED: `📦 Buyurtma №${order.id} jo‘natildi. Yo‘lda!`,
-    DELIVERED: `🎉 Buyurtma №${order.id} yetkazildi. Xaridingiz uchun rahmat!`,
-    CANCELLED: `❌ Buyurtma №${order.id} bekor qilindi. Savollar bo‘lsa yozing.`,
-  };
-
-  const text = messages[order.status];
-  if (!text) return;
+  const t = texts(order.user?.language);
+  const build = t.status[order.status];
+  if (!build) return;
 
   try {
-    await bot.sendMessage(order.user.telegramId, text);
+    await bot.sendMessage(order.user.telegramId, build(order.id));
   } catch (error) {
     console.warn('⚠️  Holat xabarini yuborib bo‘lmadi:', error.message);
   }

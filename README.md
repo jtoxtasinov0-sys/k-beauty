@@ -183,7 +183,37 @@ Agar menu tugmasi avtomatik o'rnatilmasa:
 
 ---
 
-## 7. Qanday ishlaydi
+## 7. Til (o'zbekcha / ruscha)
+
+Yangi mijoz botga birinchi marta `/start` yozganda bot avval **tilni so'raydi**:
+
+```
+Tilni tanlang / Выберите язык 👇
+[🇺🇿 O'zbekcha]  [🇷🇺 Русский]
+```
+
+Tanlov `users.language` ustuniga yoziladi va shundan keyin **hamma narsa**
+o'sha tilda bo'ladi: salomlashuv, `/help`, buyurtma tasdig'i, holat xabarlari
+va Mini App interfeysi.
+
+| Qadam | Nima bo'ladi |
+|---|---|
+| Yangi mijoz `/start` bosdi | Til so'raladi (bir marta) |
+| Tanladi | Bazaga yoziladi, salomlashuv o'sha tilda keladi |
+| Qayta `/start` bosdi | Qayta so'ralmaydi — to'g'ridan-to'g'ri salomlashuv |
+| Tilni almashtirmoqchi | Botga `/til` yozadi |
+| Mini App'ni menyu tugmasi orqali ochdi | Birinchi ekranda til so'raladi |
+| Mini App'da tilni almashtirdi | Serverga saqlanadi — bot ham o'sha tilga o'tadi |
+
+> Bu funksiya qo'shilishidan **oldin** ro'yxatdan o'tgan mijozlardan til
+> so'ralmaydi — ularga Telegram tilidan taxmin qilingan til qo'yilgan.
+> Ular `/til` orqali o'zgartira oladi.
+
+Bot buyruqlari: `/start` · `/menu` · `/til` · `/id` · `/help`
+
+---
+
+## 8. Qanday ishlaydi
 
 | Qadam | Nima bo'ladi |
 |---|---|
@@ -196,7 +226,7 @@ Agar menu tugmasi avtomatik o'rnatilmasa:
 
 ---
 
-## 8. Admin Panel
+## 9. Admin Panel
 
 - **📦 Buyurtmalar** — mijoz ismi, telefoni, nima olgani, optom belgisi, jami summa, manzil, sana.
   Holatni o'zgartirish: Yangi → Tasdiqlandi → Jo'natildi → Yetkazildi.
@@ -213,7 +243,7 @@ Agar menu tugmasi avtomatik o'rnatilmasa:
 
 ---
 
-## 9. Muhim eslatmalar
+## 10. Muhim eslatmalar
 
 - `backend/.env` faylini hech kimga bermang va GitHub'ga yuklamang — bot tokeni va baza paroli shunda.
 - Loyihani haqiqiy foydalanuvchilarga ochishdan oldin `ALLOW_INSECURE_AUTH=false` qiling

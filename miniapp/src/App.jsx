@@ -51,9 +51,15 @@ export default function App() {
 
   const t = makeT(lang);
 
-  const setLang = useCallback((value) => {
+  /**
+   * Tilni saqlaydi. `sync` — serverga ham yuboriladimi: bot xabarlari ham
+   * shu tilda kelishi uchun tanlov profilga yoziladi. Serverdan kelgan
+   * tilni qaytarib yubormaslik uchun faqat o'sha holatda sync=false.
+   */
+  const setLang = useCallback((value, sync = true) => {
     setLangState(value);
     setItem(LANG_KEY, value);
+    if (sync) api.saveProfile({ language: value }).catch(() => {});
   }, []);
 
   // ===== Ishga tushirish =====
@@ -76,7 +82,7 @@ export default function App() {
           regions: data.regions,
         });
 
-        if (!getItem(LANG_KEY) && data.user?.language) setLang(data.user.language);
+        if (!getItem(LANG_KEY) && data.user?.language) setLang(data.user.language, false);
       })
       .catch((e) => console.error('me() xatosi:', e.message))
       .finally(() => setBooted(true));
@@ -158,6 +164,8 @@ export default function App() {
     return (
       <Onboarding
         t={t}
+        lang={lang}
+        setLang={setLang}
         onDone={() => {
           setItem(ONBOARD_KEY, '1');
           setOnboarded(true);
