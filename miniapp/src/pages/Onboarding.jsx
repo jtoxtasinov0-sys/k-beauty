@@ -7,55 +7,10 @@ const SLIDES = [
   { art: '🎁', title: 'ob3Title', text: 'ob3Text' },
 ];
 
-export default function Onboarding({ onDone, lang, setLang, t }) {
-  // 0 — til tanlash, 1..3 — tanishtiruv slaydlari
+export default function Onboarding({ onDone, t }) {
   const [step, setStep] = useState(0);
-
-  function chooseLang(value) {
-    haptic();
-    setLang(value);
-    setStep(1);
-  }
-
-  // ===== Birinchi ekran: til =====
-  // Matn ataylab ikki tilda — mijoz qaysi tilni bilishini hali bilmaymiz.
-  if (step === 0) {
-    return (
-      <div className="onboarding">
-        <div className="ob-body">
-          <div className="ob-art">🌐</div>
-          <h1>
-            Tilni tanlang
-            <br />
-            Выберите язык
-          </h1>
-
-          <div className="ob-langs">
-            <button
-              className={`region-btn${lang === 'uz' ? ' on' : ''}`}
-              onClick={() => chooseLang('uz')}
-            >
-              <span className="flag">🇺🇿</span>
-              O‘zbekcha
-            </button>
-
-            <button
-              className={`region-btn${lang === 'ru' ? ' on' : ''}`}
-              onClick={() => chooseLang('ru')}
-            >
-              <span className="flag">🇷🇺</span>
-              Русский
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ===== Tanishtiruv slaydlari =====
-  const index = step - 1;
-  const slide = SLIDES[index];
-  const isLast = index === SLIDES.length - 1;
+  const slide = SLIDES[step];
+  const isLast = step === SLIDES.length - 1;
 
   return (
     <div className="onboarding">
@@ -71,7 +26,7 @@ export default function Onboarding({ onDone, lang, setLang, t }) {
 
       <div className="ob-dots">
         {SLIDES.map((_, i) => (
-          <span key={i} className={i === index ? 'on' : ''} />
+          <span key={i} className={i === step ? 'on' : ''} />
         ))}
       </div>
 

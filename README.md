@@ -202,12 +202,19 @@ va Mini App interfeysi.
 | Tanladi | Bazaga yoziladi, salomlashuv o'sha tilda keladi |
 | Qayta `/start` bosdi | Qayta so'ralmaydi — to'g'ridan-to'g'ri salomlashuv |
 | Tilni almashtirmoqchi | Botga `/til` yozadi |
-| Mini App'ni menyu tugmasi orqali ochdi | Birinchi ekranda til so'raladi |
-| Mini App'da tilni almashtirdi | Serverga saqlanadi — bot ham o'sha tilga o'tadi |
+| Mini App'ni ochdi | Botda tanlagan tilida ochiladi — qayta so'ralmaydi |
+| Mini App'dagi UZ/RU tugmasi bilan almashtirdi | Serverga saqlanadi — bot ham o'sha tilga o'tadi |
+
+Til **faqat botda** so'raladi — Mini App ichida alohida til ekrani yo'q.
+App botda tanlangan tilni o'zi oladi, almashtirish kerak bo'lsa yuqoridagi
+UZ/RU tugmasi yoki Profil bo'limi orqali qilinadi.
 
 > Bu funksiya qo'shilishidan **oldin** ro'yxatdan o'tgan mijozlardan til
 > so'ralmaydi — ularga Telegram tilidan taxmin qilingan til qo'yilgan.
 > Ular `/til` orqali o'zgartira oladi.
+>
+> Botga `/start` bosmasdan, to'g'ridan-to'g'ri menyu tugmasi orqali kirgan
+> mijozga Telegram tilidan taxmin qilingan til qo'yiladi.
 
 Bot buyruqlari: `/start` · `/menu` · `/til` · `/id` · `/help`
 

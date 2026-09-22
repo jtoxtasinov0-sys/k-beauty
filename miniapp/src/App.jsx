@@ -164,8 +164,6 @@ export default function App() {
     return (
       <Onboarding
         t={t}
-        lang={lang}
-        setLang={setLang}
         onDone={() => {
           setItem(ONBOARD_KEY, '1');
           setOnboarded(true);
