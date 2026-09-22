@@ -1246,19 +1246,63 @@ img {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: #000;
+  background: #0b0b0d;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+/*
+  Rasmning xiralashgan, kattalashtirilgan nusxasi fon bo'lib turadi.
+  inset manfiy — blur chetlaridagi shaffof hoshiya ko'rinmasligi uchun.
+*/
+.sv-bg {
+  position: absolute;
+  inset: -60px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(38px) saturate(1.35) brightness(0.55);
+  transform: scale(1.1);
+}
+
+/* Yuqori va past tomonni biroz qoraytiradi — matn har qanday rasmda o'qiladi */
+.sv-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent 14%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent 22%);
+}
+
+/*
+  Rasm kartochkasi. Nisbati 4:5 — telefon ekraniga yaqin, shuning uchun
+  kvadrat mahsulot rasmi ham ekranni ancha to'ldiradi. Chetidan ozgina
+  qirqiladi (mahsulot o'rtada bo'lgani uchun bilinmaydi), qolgan joyni
+  xiralashgan fon egallaydi — qora bo'shliq qolmaydi.
+*/
+.sv-frame {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  /* eni va bo'yi JS'da hisoblanadi — rasm shakliga qarab */
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
+  animation: sv-in 0.32s ease;
 }
 
 .sv-image {
-  max-width: 100%;
-  max-height: 100%;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  display: block;
+}
+
+@keyframes sv-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* --- yuqoridagi progress chiziqlari --- */
@@ -1269,15 +1313,15 @@ img {
   right: 0;
   display: flex;
   gap: 4px;
-  padding: 10px 12px;
-  z-index: 3;
+  padding: calc(12px + env(safe-area-inset-top)) 12px 0;
+  z-index: 4;
 }
 
 .sv-bar {
   flex: 1;
-  height: 2.5px;
+  height: 3px;
   border-radius: 99px;
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.3);
   overflow: hidden;
 }
 
@@ -1304,15 +1348,19 @@ img {
 
 .sv-close {
   position: absolute;
-  top: 26px;
+  top: calc(26px + env(safe-area-inset-top));
   right: 12px;
-  z-index: 4;
-  width: 38px;
-  height: 38px;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.38);
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #fff;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1;
 }
 
@@ -1321,7 +1369,7 @@ img {
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 2;
+  z-index: 3;
   background: transparent;
   border: none;
   padding: 0;
@@ -1339,32 +1387,40 @@ img {
 
 /* --- pastdagi sarlavha va tugma --- */
 .sv-foot {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  padding: 40px 20px calc(26px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+  position: relative;
+  z-index: 4;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 20px 22px calc(24px + env(safe-area-inset-bottom));
   text-align: center;
   pointer-events: none;
 }
 
 .sv-title {
   color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 14px;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
 }
 
 .sv-cta {
   pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: var(--pink);
   color: #fff;
   border-radius: 99px;
-  padding: 13px 30px;
-  font-size: 15px;
+  padding: 14px 34px;
+  font-size: 15.5px;
   font-weight: 700;
-  box-shadow: 0 6px 20px rgba(255, 77, 126, 0.45);
+  box-shadow: 0 8px 26px rgba(255, 77, 126, 0.5);
+  transition: transform 0.15s ease;
+}
+
+.sv-cta:active {
+  transform: scale(0.96);
 }
