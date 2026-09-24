@@ -70,6 +70,14 @@ export function resolveWebAppUrl(rawValue = process.env.WEBAPP_URL, hosted = isH
 
 const webApp = resolveWebAppUrl();
 
+/**
+ * Render'ga nusxalanganda token/username atrofida probel, qo'shtirnoq yoki
+ * "@" qolib ketishi mumkin — shunda bot 401/404 bilan ishlamaydi. Tozalaymiz.
+ */
+function cleanEnv(value) {
+  return String(value || '').trim().replace(/^["']+|["']+$/g, '').trim();
+}
+
 /** Loyihaning asosiy sozlamalari — barcha o'zgaruvchilar shu yerdan olinadi. */
 export const config = {
   port: Number(process.env.PORT || 4000),
@@ -77,8 +85,8 @@ export const config = {
   isHosted,
 
   bot: {
-    token: process.env.BOT_TOKEN || '',
-    username: process.env.BOT_USERNAME || '',
+    token: cleanEnv(process.env.BOT_TOKEN),
+    username: cleanEnv(process.env.BOT_USERNAME).replace(/^@/, ''),
     webAppUrl: webApp.url,
     // 'env' — WEBAPP_URL ishlatildi; 'fallback-*' — u yaroqsiz bo'lgani uchun
     // doimiy havolaga o'tildi. /  sahifasida ko'rinadi.
