@@ -1,6 +1,9 @@
 :root {
-  --pink: #ff4d7e;
-  --pink-soft: #fff1f5;
+  /* Colibri Cosmetics: logotipdagi to'q feruza + oltin */
+  --brand: #035667;
+  --brand-dark: #023f4b;
+  --brand-soft: #e8f2f4;
+  --gold: #c9a24a;
   --ink: #14181f;
   --muted: #7b8794;
   --line: #e9ecf1;
@@ -64,8 +67,10 @@ img {
 }
 
 .login-card .logo {
-  font-size: 44px;
-  margin-bottom: 10px;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  margin: 0 auto 12px;
 }
 
 .login-card h1 {
@@ -102,8 +107,14 @@ img {
   white-space: nowrap;
 }
 
+.brand-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+
 .brand span {
-  color: var(--pink);
+  color: var(--brand);
 }
 
 .tabs {
@@ -120,8 +131,8 @@ img {
 }
 
 .tabs button.on {
-  background: var(--pink-soft);
-  color: var(--pink);
+  background: var(--brand-soft);
+  color: var(--brand);
 }
 
 .logout {
@@ -192,7 +203,7 @@ img {
 }
 
 .btn-primary {
-  background: var(--pink);
+  background: var(--brand);
   color: #fff;
 }
 
@@ -263,7 +274,7 @@ tr:hover td {
   width: 48px;
   height: 48px;
   border-radius: 9px;
-  background: var(--pink-soft);
+  background: var(--brand-soft);
   display: grid;
   place-items: center;
   font-size: 20px;
@@ -455,7 +466,7 @@ tr:hover td {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: var(--pink);
+  border-color: var(--brand);
 }
 
 .field textarea {
@@ -481,7 +492,7 @@ tr:hover td {
 .check-row input {
   width: 18px;
   height: 18px;
-  accent-color: var(--pink);
+  accent-color: var(--brand);
   cursor: pointer;
 }
 
@@ -504,7 +515,7 @@ tr:hover td {
 }
 
 .upload-box:hover {
-  border-color: var(--pink);
+  border-color: var(--brand);
 }
 
 .upload-box input {
@@ -616,7 +627,7 @@ tr:hover td {
   height: 18px;
   margin: 0;
   flex-shrink: 0;
-  accent-color: #e93368;
+  accent-color: #023f4b;
 }
 
 /* ===================== MIJOZLAR ===================== */
@@ -633,7 +644,7 @@ tr:hover td {
 
 .search-input:focus {
   outline: none;
-  border-color: #e93368;
+  border-color: #023f4b;
 }
 
 /* Bosilsa mijoz kartochkasi ochiladigan qatorlar */
@@ -644,7 +655,7 @@ tr:hover td {
 /* Mijozlar sahifasida klass <tr> da, Buyurtmalarda esa <td> da turadi */
 .row-click:hover td,
 td.row-click:hover {
-  background: #fdf2f6;
+  background: #eef6f7;
 }
 
 /* --- mijoz kartochkasi --- */

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { haptic } from '../telegram.js';
 
 const SLIDES = [
-  { art: '💎', title: 'ob1Title', text: 'ob1Text' },
+  { logo: true, title: 'ob1Title', text: 'ob1Text' },
   { art: '🛍️', title: 'ob2Title', text: 'ob2Text' },
   { art: '🎁', title: 'ob3Title', text: 'ob3Text' },
 ];
@@ -19,7 +19,11 @@ export default function Onboarding({ onDone, t }) {
       </button>
 
       <div className="ob-body">
-        <div className="ob-art">{slide.art}</div>
+        {slide.logo ? (
+          <img className="ob-art ob-logo" src="/logo.webp" alt="Colibri Cosmetics" />
+        ) : (
+          <div className="ob-art">{slide.art}</div>
+        )}
         <h1>{t(slide.title)}</h1>
         <p>{t(slide.text)}</p>
       </div>

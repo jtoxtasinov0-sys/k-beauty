@@ -46,7 +46,8 @@ export default function App() {
     <>
       <header className="topbar">
         <div className="brand">
-          💄 K-Beauty <span>Admin</span>
+          <img className="brand-icon" src="/icon.webp" alt="" />
+          Colibri <span>Admin</span>
         </div>
 
         <nav className="tabs">

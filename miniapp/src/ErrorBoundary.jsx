@@ -23,7 +23,7 @@ const button = {
   padding: '12px 28px',
   border: 'none',
   borderRadius: '999px',
-  background: '#ff5c8a',
+  background: '#035667',
   color: '#fff',
   fontSize: '16px',
   fontWeight: 600,

@@ -25,7 +25,7 @@ app.get('/healthz', (_req, res) => res.json({ ok: true }));
 // Brauzerdan ochib tekshirish uchun: bot ishlayaptimi va Mini App havolasi to'g'rimi.
 app.get('/', (_req, res) => {
   res.json({
-    name: 'K-Beauty Store Optom API',
+    name: 'Colibri Cosmetics API',
     status: 'ishlayapti',
     uptimeSeconds: Math.round(process.uptime()),
     bot: getBotStatus(),
