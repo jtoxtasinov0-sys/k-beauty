@@ -1,7 +1,9 @@
-# 💄 K-Beauty Store Optom
+# ✨ Colibri Cosmetics
 
 Telegram Mini App + Bot + Admin Panel — Koreya kosmetikasi uchun online do'kon.
 Narxlar Koreya wonida (₩), donaga va optom. Yetkazib berish: 🇰🇷 Koreya ichi va 🇺🇿 O'zbekiston.
+
+Bot nomini o'zgartirish: [docs/BOT-NOMI.md](docs/BOT-NOMI.md)
 
 ```
 K-beauty/

@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 /**
- * Boshlang'ich mahsulotlar — K-Beauty Store Optom ombori.
+ * Boshlang'ich mahsulotlar — Colibri Cosmetics ombori.
  * Faqat bitta narx ma'lum bo'lgan mahsulotlarda dona = optom qilib qo'yilgan,
  * ularni Admin Panelda istalgan vaqtda tuzatish mumkin.
  */

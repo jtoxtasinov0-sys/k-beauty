@@ -1,4 +1,4 @@
-# K-Beauty Store Optom — Internetga chiqarish qo'llanmasi
+# Colibri Cosmetics — Internetga chiqarish qo'llanmasi
 
 > ## ✅ HOLAT: TO'LIQ ISHGA TUSHIRILGAN (2026-09-22)
 >

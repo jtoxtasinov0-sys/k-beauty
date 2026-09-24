@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "K-Beauty Store Optom — Telegram bot + REST API",
+  "description": "Colibri Cosmetics — Telegram bot + REST API",
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",

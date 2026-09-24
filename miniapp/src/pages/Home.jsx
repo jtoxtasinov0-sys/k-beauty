@@ -21,7 +21,8 @@ export default function Home({
   return (
     <div className="page">
       <div className="header">
-        <div>
+        <img className="header-logo" src="/icon.webp" alt="Colibri Cosmetics" />
+        <div className="header-text">
           <h2>
             {t('hello')}, {user?.firstName || '👋'}
           </h2>

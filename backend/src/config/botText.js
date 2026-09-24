@@ -26,7 +26,7 @@ const TEXT = {
     openShop: '🛍 Do‘konni ochish',
     menuButton: 'Do‘kon',
 
-    welcome: `<b>K-Beauty Store Optom</b> 🇰🇷
+    welcome: `<b>Colibri Cosmetics</b> ✨🇰🇷
 
 Koreyadan original kosmetika — <b>donaga</b> va <b>optom</b> narxlarda.
 
@@ -77,7 +77,7 @@ Savollar bo‘lsa shu yerga yozib qoldiring, operator javob beradi.`,
     openShop: '🛍 Открыть магазин',
     menuButton: 'Магазин',
 
-    welcome: `<b>K-Beauty Store Optom</b> 🇰🇷
+    welcome: `<b>Colibri Cosmetics</b> ✨🇰🇷
 
 Оригинальная косметика из Кореи — <b>поштучно</b> и <b>оптом</b>.
 

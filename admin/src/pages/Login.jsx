@@ -25,8 +25,8 @@ export default function Login({ onSuccess }) {
   return (
     <div className="login-wrap">
       <form className="login-card" onSubmit={submit}>
-        <div className="logo">💄</div>
-        <h1>K-Beauty Admin</h1>
+        <img className="logo" src="/icon.webp" alt="Colibri Cosmetics" />
+        <h1>Colibri Cosmetics Admin</h1>
         <p>Boshqaruv paneliga kirish</p>
 
         {error && <div className="alert">{error}</div>}
